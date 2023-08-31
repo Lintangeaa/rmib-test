@@ -1,8 +1,8 @@
 import React from "react"
 import { FaUserAlt } from "react-icons/fa"
 import Link from "next/link"
-import Header from "../components/Header"
-import LayoutRmib from "../components/rmib/LayoutRmib"
+import Header from "../../components/Header"
+import LayoutRmib from "../../components/rmib/LayoutRmib"
 
 const index = () => {
   return (

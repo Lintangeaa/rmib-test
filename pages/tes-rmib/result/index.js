@@ -1,4 +1,4 @@
-import Layout from "@/pages/components/Layout"
+import Layout from "@/components/Layout"
 import React, { useEffect, useState } from "react"
 
 const Result = () => {

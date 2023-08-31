@@ -1,12 +1,12 @@
-import ButtonPrimary from "@/pages/components/button/ButtonPrimary"
-import LayoutRmib from "@/pages/components/rmib/LayoutRmib"
+import ButtonPrimary from "@/components/button/ButtonPrimary"
+import LayoutRmib from "@/components/rmib/LayoutRmib"
 import React, { useState, useEffect } from "react"
-import ButtonAbuBgt from "@/pages/components/button/ButtonAbuBgt"
-import ButtonPilihan from "@/pages/components/button/ButtonPilihan"
-import ButtonCategory from "@/pages/components/button/ButtonCategory"
+import ButtonAbuBgt from "@/components/button/ButtonAbuBgt"
+import ButtonPilihan from "@/components/button/ButtonPilihan"
+import ButtonCategory from "@/components/button/ButtonCategory"
 import { useRouter } from "next/router"
 import { Alert } from "antd"
-import Loader from "@/pages/components/Loader"
+import Loader from "@/components/Loader"
 
 const Index = () => {
   const router = useRouter()
@@ -117,7 +117,7 @@ const Index = () => {
   return (
     <LayoutRmib>
       {isLoading ? <Loader /> : null}
-      <section className="mb-20 md:px-16 lg:px-60">
+      <section className="mb-20 md:px-16 lg:px-40">
         <div className="flex justify-center space-x-8">
           <ButtonPrimary title={"Section A"} />
         </div>
@@ -192,7 +192,7 @@ const Index = () => {
                     <td className="text-center border border-primary">
                       {item.number}
                     </td>
-                    <td className="px-4 py-2 border border-primary">
+                    <td className="px-2 py-2 border border-primary">
                       {
                         categories.find(
                           (category) => category.name === item.title
