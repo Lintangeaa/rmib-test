@@ -8,7 +8,7 @@ const Layout = ({ children }) => {
       <Header>
         <Navbar />
       </Header>
-      {children}
+      <div className="px-20">{children}</div>
     </main>
   )
 }

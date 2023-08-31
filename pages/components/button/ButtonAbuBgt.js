@@ -1,13 +1,14 @@
 import React from "react"
 import Link from "next/link"
 
-const ButtonAbuBgt = ({ link, title }) => {
+const ButtonAbuBgt = ({ onClick, title }) => {
   return (
-    <Link href={link}>
-      <button className="font-bold text-white rounded-lg w-44 bg-abubgt h-11">
-        {title}
-      </button>
-    </Link>
+    <button
+      onClick={onClick}
+      className="font-bold text-white rounded-lg w-44 bg-abubgt h-11"
+    >
+      {title}
+    </button>
   )
 }
 
