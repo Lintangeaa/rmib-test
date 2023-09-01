@@ -1,11 +1,11 @@
 import axios from "axios"
-import { urlAuth } from "../routes/auth"
+import { urlRmib } from "../routes/rmib"
 
-const LoginApi = async ({ email, password }) => {
+const SaveResultApi = async ({ userId, result }) => {
   try {
-    const data = { email, password }
+    const data = { userId, result }
     const res = await axios({
-      baseURL: `${urlAuth}/login`,
+      baseURL: `${urlRmib}`,
       method: "POST",
       data,
       headers: {
@@ -25,4 +25,4 @@ const LoginApi = async ({ email, password }) => {
   }
 }
 
-export default LoginApi
+export default SaveResultApi

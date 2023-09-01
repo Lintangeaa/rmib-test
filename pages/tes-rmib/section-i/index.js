@@ -7,12 +7,17 @@ import ButtonCategory from "@/components/button/ButtonCategory"
 import Loader from "@/components/Loader"
 import { Alert } from "antd"
 import { useRouter } from "next/router"
+import SaveResultApi from "@/api/rmib/SaveResultApi"
+import Cookies from "js-cookie"
 
 const Index = () => {
   const router = useRouter()
   const [message, setMessage] = useState("")
   const [alertVisible, setAlertVisible] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [showNextButton, setShowNextButton] = useState(false)
+  const [userId, setUserId] = useState("")
+  const [result, setResult] = useState("")
 
   const numbers = Array.from({ length: 12 }, (_, index) => index + 1)
   const categories = [
@@ -91,7 +96,7 @@ const Index = () => {
     router.push("/tes-rmib/section-a")
   }
 
-  const handleNextClick = () => {
+  const handleSelesai = () => {
     const storedValue = localStorage.getItem("accumulatedValues")
     if (Object.keys(fieldValues).length === 12) {
       if (storedValue) {
@@ -108,18 +113,13 @@ const Index = () => {
             }
           }
         }
+        setResult(JSON.stringify(accumulatedValues))
         localStorage.setItem(
           "accumulatedValues",
           JSON.stringify(accumulatedValues)
         )
-
-        console.log("Accumulated values:", accumulatedValues)
       }
-      setIsLoading(true)
-      setTimeout(() => {
-        setIsLoading(false)
-        router.push("/tes-rmib/result")
-      }, 3000)
+      setShowNextButton(true)
     } else {
       setAlertVisible(true)
       setMessage("Pilih semua jenis pekerjaan")
@@ -129,12 +129,36 @@ const Index = () => {
     }
   }
 
+  const handleNextClick = () => {
+    if (result) {
+      SaveResultApi({ userId, result }).then((res) => {
+        console.log(res)
+        if (res.status === true) {
+          console.log("Berhasil")
+        } else {
+          console.log("Gagal")
+        }
+      })
+      setIsLoading(true)
+      setTimeout(() => {
+        setIsLoading(false)
+        router.push("/tes-rmib/result")
+      }, 3000)
+    }
+  }
+
+  console.log("result", result)
+
   const sortedSelectedFields = selectedFields
     .slice()
     .sort((a, b) => a.number - b.number)
 
   console.log("field value", fieldValues)
   useEffect(() => {
+    const id = Cookies.get("userId")
+
+    setUserId(id)
+
     const cek = localStorage.getItem("accumulatedValues")
     console.log("total", cek)
   }, [])
@@ -225,7 +249,10 @@ const Index = () => {
         </fieldset>
         <fieldset className="flex justify-between mt-20">
           <ButtonAbuBgt onClick={handlePrev} title={"Kembali"} />
-          <ButtonAbuBgt title={"Selanjutnya"} onClick={handleNextClick} />
+          <ButtonAbuBgt onClick={handleSelesai} title={"Selesai"} />
+          {showNextButton ? (
+            <ButtonAbuBgt title={"Selanjutnya"} onClick={handleNextClick} />
+          ) : null}
         </fieldset>
       </section>
     </LayoutRmib>

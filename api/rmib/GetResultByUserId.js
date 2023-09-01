@@ -1,12 +1,12 @@
 import axios from "axios"
 import GetToken from "../utils/GetToken"
-import { urlAuth } from "../routes/auth"
+import { urlRmib } from "../routes/rmib"
 
-const WhoamiApi = async () => {
+const GetResultByUserId = async ({ userId }) => {
   try {
     const res = await axios({
       method: "GET",
-      baseURL: `${urlAuth}/me`,
+      baseURL: `${urlRmib}/${userId}`,
       headers: {
         Authorization: GetToken(),
       },
@@ -24,4 +24,4 @@ const WhoamiApi = async () => {
   }
 }
 
-export default WhoamiApi
+export default GetResultByUserId

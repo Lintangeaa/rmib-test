@@ -1,10 +1,15 @@
+import GetResultByUserId from "@/api/rmib/GetResultByUserId"
+import GetMahasiswaById from "@/api/users/GetMahasiswaById"
 import Layout from "@/components/Layout"
+import Cookies from "js-cookie"
 import React, { useEffect, useState } from "react"
 
 const Result = () => {
   const [sortedValues, setSortedValues] = useState([])
   const [topCategory, setTopCategory] = useState("")
   const [totalValue, setTotalValue] = useState(0)
+  const [result, setResult] = useState("")
+  const [mahasiswa, setMahasiswa] = useState({})
 
   const categories = [
     { label: "Outdoor", name: "outdoor" },
@@ -22,31 +27,57 @@ const Result = () => {
   ]
 
   useEffect(() => {
-    const result = localStorage.getItem("accumulatedValues")
-    const parsedResult = JSON.parse(result)
+    const user = JSON.parse(Cookies.get("User"))
 
-    // Convert object values into an array of objects
-    const valuesArray = Object.entries(parsedResult).map(
-      ([category, value]) => ({
-        category,
-        value,
+    const userId = user.id
+
+    try {
+      GetResultByUserId({ userId }).then((res) => {
+        if (!res) {
+          console.log("Kaga ada")
+        }
+        const result = res.result
+        setResult(result)
+        console.log(result)
       })
-    )
-
-    const sortedArray = valuesArray.sort((a, b) => a.value - b.value)
-
-    setSortedValues(sortedArray)
-
-    if (sortedArray.length > 0) {
-      setTopCategory(sortedArray[0].category)
+      GetMahasiswaById({ userId }).then((res) => {
+        if (!res) {
+          console.log("Kaga ada")
+        }
+        const data = res
+        setMahasiswa(data)
+      })
+    } catch (error) {
+      console.error("Error fetching result:", error)
     }
-
-    const calculatedTotalValue = valuesArray.reduce(
-      (total, item) => total + item.value,
-      0
-    )
-    setTotalValue(calculatedTotalValue)
   }, [])
+
+  useEffect(() => {
+    if (result) {
+      const parsedResult = JSON.parse(result)
+
+      const valuesArray = Object.entries(parsedResult).map(
+        ([category, value]) => ({
+          category,
+          value,
+        })
+      )
+
+      const sortedArray = valuesArray.sort((a, b) => a.value - b.value)
+
+      setSortedValues(sortedArray)
+
+      if (sortedArray.length > 0) {
+        setTopCategory(sortedArray[0].category)
+      }
+
+      const calculatedTotalValue = valuesArray.reduce(
+        (total, item) => total + item.value,
+        0
+      )
+      setTotalValue(calculatedTotalValue)
+    }
+  }, [result])
 
   console.log("total", totalValue)
 
@@ -58,8 +89,8 @@ const Result = () => {
         </h1>
         <div className="flex justify-between">
           <fieldset className="w-1/2 p-2 border-2 rounded-lg border-primary">
-            <p>Nama: User Test</p>
-            <p>NIM : - </p>
+            <p>Nama: {mahasiswa.name}</p>
+            <p>NIM : {mahasiswa.nim} </p>
             <p>
               Jenis pekerjaan yang paling anda minati adalah{" "}
               <span className="font-semibold text-primary">

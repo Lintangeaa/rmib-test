@@ -1,10 +1,8 @@
 import React from "react"
-import { FaUserAlt } from "react-icons/fa"
 import Link from "next/link"
-import Header from "../../components/Header"
 import LayoutRmib from "../../components/rmib/LayoutRmib"
 
-const index = () => {
+const Index = () => {
   return (
     <main>
       <LayoutRmib>
@@ -20,4 +18,4 @@ const index = () => {
   )
 }
 
-export default index
+export default Index
