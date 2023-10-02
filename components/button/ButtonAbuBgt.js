@@ -1,5 +1,5 @@
-import React from "react"
-import Link from "next/link"
+import React from "react";
+import Link from "next/link";
 
 const ButtonAbuBgt = ({ onClick, title }) => {
   return (
@@ -9,7 +9,7 @@ const ButtonAbuBgt = ({ onClick, title }) => {
     >
       {title}
     </button>
-  )
-}
+  );
+};
 
-export default ButtonAbuBgt
+export default ButtonAbuBgt;

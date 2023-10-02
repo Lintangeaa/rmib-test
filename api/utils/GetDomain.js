@@ -1,6 +1,6 @@
 const GetDomain = () => {
-  const domain = process.env.NEXT_PUBLIC_DOMAIN
-  return domain
-}
+  const domain = process.env.NEXT_PUBLIC_DOMAIN2;
+  return domain;
+};
 
-export default GetDomain
+export default GetDomain;

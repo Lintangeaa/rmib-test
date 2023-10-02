@@ -1,5 +1,5 @@
-import React from "react"
-import PropTypes from "prop-types"
+import React from "react";
+import PropTypes from "prop-types";
 
 const ButtonPilihan = ({ isi, isSelected, onClick }) => {
   return (
@@ -11,13 +11,13 @@ const ButtonPilihan = ({ isi, isSelected, onClick }) => {
     >
       {isi}
     </button>
-  )
-}
+  );
+};
 
 ButtonPilihan.propTypes = {
   isi: PropTypes.number.isRequired,
   isSelected: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
-}
+};
 
-export default ButtonPilihan
+export default ButtonPilihan;

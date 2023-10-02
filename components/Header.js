@@ -1,53 +1,47 @@
-import React, { useEffect, useState } from "react"
-import { FaUserAlt } from "react-icons/fa"
-import WhoamiApi from "@/api/auth/Whoami"
-import Cookies from "js-cookie"
-import { useRouter } from "next/router"
+import React, { useEffect, useState } from 'react';
+import { FaUserAlt } from 'react-icons/fa';
+import WhoamiApi from '@/api/auth/Whoami';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
 
 const Header = ({ children }) => {
-  const router = useRouter()
-  const [user, setUser] = useState({})
-  const [isHitApi, setIsHitApi] = useState(false)
-  const [showMenu, setShowMenu] = useState(false)
+  const router = useRouter();
+  const [user, setUser] = useState({});
+  const [showMenu, setShowMenu] = useState(false);
 
   useEffect(() => {
-    const token = Cookies.get("token")
+    const token = Cookies.get('token');
     if (!token) {
-      router.push("/auth/login")
+      router.push('/auth/login');
     }
-  }, [router])
-
-  useEffect(() => {
-    WhoamiApi().then((res) => {
-      setIsHitApi(true)
-      if (res) {
-        setUser(res)
-        const data = res
-        Cookies.set("User", JSON.stringify(data))
-      }
-    })
-  }, [])
+    const user = JSON.parse(Cookies.get('User'));
+    setUser(user);
+  }, [router]);
 
   const toggleMenu = () => {
-    setShowMenu(!showMenu)
-  }
+    setShowMenu(!showMenu);
+  };
 
   const handleLogout = () => {
-    Cookies.remove("token")
-    Cookies.remove("User")
+    Cookies.remove('token');
+    Cookies.remove('User');
 
-    router.push("/auth/login")
-  }
+    router.push('/auth/login');
+  };
 
-  console.log(user)
   return (
     <header className="flex items-center justify-between w-full h-40 px-20 mb-10 shadow-xl bg-primary">
-      <div className="flex items-center justify-start w-1/3 ">
+      <div className="flex items-center justify-start lg:w-1/6 ">
         <div className="w-10 h-10 bg-white">logo</div>
       </div>
-      <div className="flex justify-center w-1/3">{children}</div>
-      <div onClick={toggleMenu} className="flex items-center justify-end w-1/3">
-        <span className="text-white me-8">{user.username}</span>
+      <div className="flex justify-center md:w-4/6">{children}</div>
+      <div
+        onClick={toggleMenu}
+        className="flex items-center justify-end lg:w-1/6"
+      >
+        <span className="font-semibold text-white me-2 first-letter:uppercase">
+          {user.username}
+        </span>
         <FaUserAlt className="p-1 text-5xl text-white border-2 rounded-full hover:cursor-pointer" />
         {showMenu && (
           <div className="absolute p-2 mt-10 bg-white border rounded-lg shadow-2xl min-w-fit top-20 border-primary right-12">
@@ -64,7 +58,7 @@ const Header = ({ children }) => {
         )}
       </div>
     </header>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
