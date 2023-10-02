@@ -2,8 +2,7 @@ import ButtonPrimary from "@/components/button/ButtonPrimary"
 import LayoutRmib from "@/components/rmib/LayoutRmib"
 import React, { useState, useEffect } from "react"
 import ButtonAbuBgt from "@/components/button/ButtonAbuBgt"
-import ButtonPilihan from "@/components/button/ButtonPilihan"
-import ButtonCategory from "@/components/button/ButtonCategory"
+import SetCategory from "@/components/button/ButtonCategory"
 import Loader from "@/components/Loader"
 import { Alert } from "antd"
 import { useRouter } from "next/router"
@@ -16,48 +15,98 @@ const Index = () => {
 
   const numbers = Array.from({ length: 12 }, (_, index) => index + 1)
   const categories = [
-    { label: "Personal Contact", name: "personalContact" },
-    { label: "Aesthetic", name: "aesthetic" },
-    { label: "Literary", name: "literary" },
-    { label: "Music", name: "music" },
-    { label: "Social Service", name: "socialService" },
-    { label: "Clarical", name: "clarical" },
-    { label: "Practical", name: "practical" },
-    { label: "Medical", name: "medical" },
-    { label: "Outdoor", name: "outdoor" },
-    { label: "Mecanical", name: "mecanical" },
-    { label: "Computational", name: "computational" },
-    { label: "Science", name: "science" },
+    { man: "Outdoor", woman: "Outdoor", name: "outdoor" },
+    { man: "Mecanical", woman: "Outdoor", name: "mecanical" },
+    { man: "Computational", woman: "Outdoor", name: "computational" },
+    { man: "Science", woman: "Outdoor", name: "science" },
+    { man: "Personal Contact", woman: "Outdoor", name: "personalContact" },
+    { man: "Aesthetic", woman: "Outdoor", name: "aesthetic" },
+    { man: "Literary", woman: "Outdoor", name: "literary" },
+    { man: "Music", woman: "Outdoor", name: "music" },
+    { man: "Social Service", woman: "Outdoor", name: "socialService" },
+    { man: "Clarical", woman: "Outdoor", name: "clarical" },
+    { man: "Practical", woman: "Outdoor", name: "practical" },
+    { man: "Medical", woman: "Outdoor", name: "medical" },
   ]
+
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("accumulatedValues"))
+
+    console.log("hasil", data)
+
+    let total = 0
+    for (const key in data) {
+      if (data.hasOwnProperty(key)) {
+        const value = data[key]
+        if (!isNaN(value)) {
+          total += value
+        }
+      }
+    }
+
+    console.log("Total", total)
+  })
 
   const [selectedFields, setSelectedFields] = useState([])
   const [selectedCategory, setSelectedCategory] = useState("")
-  const [selectedCategoryMap, setSelectedCategoryMap] = useState({})
   const [selectedFieldCategory, setSelectedFieldCategory] = useState({})
   const [fieldValues, setFieldValues] = useState({})
+  const [selectedNumbers, setSelectedNumbers] = useState({})
+  const [selectDisabled, setSelectDisabled] = useState({})
 
-  const handleFieldClick = (fieldNumber, fieldName) => {
-    const existingFieldIndex = selectedFields.findIndex(
-      (field) => field.number === fieldNumber
-    )
-    if (existingFieldIndex !== -1) {
-      const updatedFields = [...selectedFields]
-      updatedFields.splice(existingFieldIndex, 1)
-      setSelectedFields(updatedFields)
-    } else {
+  const handleSelectChange = (event, categoryName) => {
+    const selectedNumber = parseInt(event.target.value)
+
+    setSelectedNumbers((prevSelectedNumbers) => ({
+      ...prevSelectedNumbers,
+      [categoryName]: selectedNumber,
+    }))
+
+    if (fieldValues[categoryName] === undefined) {
       setSelectedFields([
         ...selectedFields,
-        { number: fieldNumber, title: fieldName },
+        { number: selectedNumber, title: categoryName },
       ])
-    }
-  }
+      handleFieldCategoryChange(selectedNumber)
 
-  const handleCategoryClick = (categoryName, categoryList) => {
-    setSelectedCategory(categoryName)
-    setSelectedCategoryMap((prevMap) => ({
-      ...prevMap,
-      [categoryList]: categoryName,
-    }))
+      setFieldValues((prevValues) => ({
+        ...prevValues,
+        [categoryName]: selectedNumber,
+      }))
+
+      // Set status disabled untuk kategori ini menjadi true
+      setSelectDisabled((prevSelectDisabled) => ({
+        ...prevSelectDisabled,
+        [categoryName]: true,
+      }))
+    } else {
+      // Jika nilai sudah ada, batalkan pemilihan
+      const updatedNumbers = { ...selectedNumbers }
+      updatedNumbers[categoryName] = ""
+      setSelectedNumbers(updatedNumbers)
+
+      const updatedFields = selectedFields.filter(
+        (field) => field.title !== categoryName
+      )
+      setSelectedFields(updatedFields)
+
+      setSelectedFieldCategory((prevMap) => {
+        const updatedMap = { ...prevMap }
+        delete updatedMap[selectedNumber]
+        return updatedMap
+      })
+
+      setFieldValues((prevValues) => {
+        const updatedValues = { ...prevValues }
+        delete updatedValues[categoryName]
+        return updatedValues
+      })
+
+      setSelectDisabled((prevSelectDisabled) => ({
+        ...prevSelectDisabled,
+        [categoryName]: false,
+      }))
+    }
   }
 
   const handleFieldCategoryChange = (fieldNumber) => {
@@ -73,6 +122,11 @@ const Index = () => {
       return
     }
 
+    setSelectDisabled((prevSelectDisabled) => ({
+      ...prevSelectDisabled,
+      [categoryName]: false,
+    }))
+
     const categoryName = selectedCategoryObj.name
     setSelectedFieldCategory((prevMap) => ({
       ...prevMap,
@@ -84,6 +138,39 @@ const Index = () => {
     setFieldValues((prevValues) => ({
       ...prevValues,
       [categoryName]: fieldValue,
+    }))
+  }
+
+  const handleCancel = (categoryName) => {
+    setSelectedNumbers((prevSelectedNumbers) => {
+      const { [categoryName]: removedValue, ...rest } = prevSelectedNumbers
+      return rest
+    })
+
+    const updatedFields = selectedFields.filter(
+      (field) => field.title !== categoryName
+    )
+
+    setSelectedFields(updatedFields)
+
+    setSelectedFieldCategory((prevMap) => {
+      const updatedMap = { ...prevMap }
+      for (const field of updatedFields) {
+        delete updatedMap[field.number]
+      }
+      return updatedMap
+    })
+
+    setFieldValues((prevValues) => {
+      const updatedValues = { ...prevValues }
+      delete updatedValues[categoryName]
+      return updatedValues
+    })
+
+    // Set status disabled untuk kategori ini menjadi false (bisa diklik)
+    setSelectDisabled((prevSelectDisabled) => ({
+      ...prevSelectDisabled,
+      [categoryName]: false,
     }))
   }
 
@@ -108,14 +195,15 @@ const Index = () => {
             }
           }
         }
+
         localStorage.setItem(
           "accumulatedValues",
           JSON.stringify(accumulatedValues)
         )
-
         console.log("Accumulated values:", accumulatedValues)
       }
       setIsLoading(true)
+      localStorage.setItem("value", JSON.stringify(fieldValues))
       setTimeout(() => {
         setIsLoading(false)
         router.push("/tes-rmib/section-f")
@@ -134,95 +222,77 @@ const Index = () => {
     .sort((a, b) => a.number - b.number)
 
   console.log("field value", fieldValues)
-  useEffect(() => {
-    const cek = localStorage.getItem("accumulatedValues")
-    console.log("total", cek)
-  }, [])
 
   return (
     <LayoutRmib>
       {isLoading ? <Loader /> : null}
-      <section className="mb-20 md:px-16 lg:px-60">
+      <section className="mb-20 md:px-16 lg:px-40">
         <div className="flex justify-center space-x-8">
-          <ButtonPrimary title={"Section B"} />
+          <ButtonPrimary title={"Section A"} />
         </div>
         <p className="mt-12 mb-12 font-semibold text-center text-black">
           Urutkan bidang pekerjaan berikut berdasarkan yang paling kamu sukai
         </p>
+
         <span className="flex justify-center">
           {alertVisible ? (
-            <Alert
-              type="error"
-              message={message}
-              showIcon
-              className="w-1/2 mb-5 text-center"
-            />
+            <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-opacity-75 backdrop-blur-md">
+              <Alert
+                type="error"
+                message={message}
+                showIcon
+                className="w-1/2 mb-5 text-center"
+              />
+            </div>
           ) : null}
         </span>
 
-        <fieldset className="flex justify-between">
-          <div className="grid grid-cols-1 gap-8">
-            {categories.map((category, i) => (
-              <ButtonCategory
-                key={i}
-                title={category.label}
-                isSelected={
-                  selectedCategoryMap[category.name] === category.name
-                }
-                onClick={() =>
-                  handleCategoryClick(category.name, category.name)
-                }
-                className="w-full mb-4"
-              />
-            ))}
-          </div>
-          <div className="grid grid-cols-1 gap-8">
-            {numbers.map((number, i) => (
-              <ButtonPilihan
-                key={i}
-                isi={number}
-                isSelected={
-                  selectedFields.some((field) => field.number === number) &&
-                  selectedCategory !== ""
-                }
-                onClick={() => {
-                  handleFieldClick(number, selectedCategory)
-                  handleFieldCategoryChange(number, selectedCategory)
-                }}
-                additionalStyle={{
-                  backgroundColor:
-                    selectedFieldCategory[number] === selectedCategory
-                      ? "yellow" // Change this to your desired style
-                      : "",
-                }}
-              />
-            ))}
-          </div>
-          <div className="w-56 ">
-            <table className="border border-primary">
-              <thead>
-                <tr>
-                  <td className="px-4 py-2 border border-primary">No</td>
-                  <td className="px-4 py-2 border border-primary">
-                    Jenis Pekerjaan
-                  </td>
-                </tr>
-              </thead>
-              <tbody>
-                {sortedSelectedFields.map((item, i) => (
-                  <tr key={i}>
-                    <td className="text-center border border-primary">
-                      {item.number}
-                    </td>
-                    <td className="px-4 py-2 border border-primary">
-                      {item.title}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </fieldset>
+        <div className="flex flex-col items-center w-2/3 space-y-4 ">
+          {categories.map((category, i) => (
+            <div key={i} className="w-full mb-4">
+              <SetCategory men={category.man} woman={category.woman}>
+                <select
+                  onChange={(event) => handleSelectChange(event, category.name)}
+                  value={selectedNumbers[category.name] || ""}
+                  disabled={selectDisabled[category.name]}
+                  className="w-32 p-2 font-semibold text-center border-2 rounded border-primary"
+                >
+                  <option value="" disabled={!selectedCategory}>
+                    {selectedNumbers[category.name]
+                      ? `Nomor ${selectedNumbers[category.name]}`
+                      : "Pilih nomor"}
+                  </option>
+                  {numbers.map((number) => {
+                    const isNumberSelected = selectedFields.some(
+                      (field) => field.number === number
+                    )
+                    return (
+                      <option
+                        key={number}
+                        value={number}
+                        disabled={isNumberSelected}
+                      >
+                        {number}
+                      </option>
+                    )
+                  })}
+                </select>
+
+                {selectedFields.some(
+                  (field) => field.title === category.name
+                ) && (
+                  <button
+                    onClick={() => handleCancel(category.name)}
+                    className="ml-2 text-red-600 hover:text-red-800"
+                  >
+                    Cancel
+                  </button>
+                )}
+              </SetCategory>
+            </div>
+          ))}
+        </div>
+
         <fieldset className="flex justify-between mt-20">
           <ButtonAbuBgt onClick={handlePrev} title={"Kembali"} />
           <ButtonAbuBgt title={"Selanjutnya"} onClick={handleNextClick} />

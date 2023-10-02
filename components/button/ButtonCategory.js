@@ -1,22 +1,21 @@
 import React from "react"
-import PropTypes from "prop-types"
 
-const ButtonCategory = ({ title, isSelected, onClick }) => {
+const SetCategory = ({ men, children, woman }) => {
   return (
-    <button
-      className={`font-bold text-white rounded-lg w-44 h-11 ${
-        isSelected ? "bg-primary" : "bg-opacity-50 bg-primary"
-      }`}
-      onClick={onClick}
-    >
-      {title}
-    </button>
+    <div className="flex justify-between w-full ">
+      <div
+        className={`flex justify-center items-center text-xs lg:text-base lg:font-bold text-white rounded-lg  w-28 lg:w-44 h-11 bg-primary`}
+      >
+        {men}
+      </div>
+      {children}
+      <div
+        className={`flex justify-center items-center text-xs lg:text-base lg:font-bold text-white rounded-lg  w-28 lg:w-44 h-11 bg-primary`}
+      >
+        {woman}
+      </div>
+    </div>
   )
 }
 
-ButtonCategory.propTypes = {
-  title: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
-}
-
-export default ButtonCategory
+export default SetCategory

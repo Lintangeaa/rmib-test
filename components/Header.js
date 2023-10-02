@@ -41,14 +41,16 @@ const Header = ({ children }) => {
 
   console.log(user)
   return (
-    <header className="flex items-center justify-between w-full h-40 px-20 shadow-xl bg-primary">
-      <div className="w-5 h-5 bg-black">logo</div>
-      {children}
-      <div onClick={toggleMenu} className="flex items-center">
+    <header className="flex items-center justify-between w-full h-40 px-20 mb-10 shadow-xl bg-primary">
+      <div className="flex items-center justify-start w-1/3 ">
+        <div className="w-10 h-10 bg-white">logo</div>
+      </div>
+      <div className="flex justify-center w-1/3">{children}</div>
+      <div onClick={toggleMenu} className="flex items-center justify-end w-1/3">
         <span className="text-white me-8">{user.username}</span>
         <FaUserAlt className="p-1 text-5xl text-white border-2 rounded-full hover:cursor-pointer" />
         {showMenu && (
-          <div className="absolute p-2 mt-10 bg-white border rounded-lg shadow-2xl min-w-fit top-20 border-primary right-8">
+          <div className="absolute p-2 mt-10 bg-white border rounded-lg shadow-2xl min-w-fit top-20 border-primary right-12">
             <div className="block w-full px-4 py-2 text-left rounded cursor-pointer text-primary hover:bg-primary hover:text-white">
               Profile
             </div>

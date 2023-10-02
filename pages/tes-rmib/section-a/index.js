@@ -2,11 +2,10 @@ import ButtonPrimary from "@/components/button/ButtonPrimary"
 import LayoutRmib from "@/components/rmib/LayoutRmib"
 import React, { useState, useEffect } from "react"
 import ButtonAbuBgt from "@/components/button/ButtonAbuBgt"
-import ButtonPilihan from "@/components/button/ButtonPilihan"
-import ButtonCategory from "@/components/button/ButtonCategory"
 import { useRouter } from "next/router"
 import { Alert } from "antd"
 import Loader from "@/components/Loader"
+import SetCategory from "@/components/button/ButtonCategory"
 
 const Index = () => {
   const router = useRouter()
@@ -16,48 +15,80 @@ const Index = () => {
 
   const numbers = Array.from({ length: 12 }, (_, index) => index + 1)
   const categories = [
-    { label: "Outdoor", name: "outdoor" },
-    { label: "Mecanical", name: "mecanical" },
-    { label: "Computational", name: "computational" },
-    { label: "Science", name: "science" },
-    { label: "Personal Contact", name: "personalContact" },
-    { label: "Aesthetic", name: "aesthetic" },
-    { label: "Literary", name: "literary" },
-    { label: "Music", name: "music" },
-    { label: "Social Service", name: "socialService" },
-    { label: "Clarical", name: "clarical" },
-    { label: "Practical", name: "practical" },
-    { label: "Medical", name: "medical" },
+    { man: "Outdoor", woman: "Outdoor", name: "outdoor" },
+    { man: "Mecanical", woman: "Outdoor", name: "mecanical" },
+    { man: "Computational", woman: "Outdoor", name: "computational" },
+    { man: "Science", woman: "Outdoor", name: "science" },
+    { man: "Personal Contact", woman: "Outdoor", name: "personalContact" },
+    { man: "Aesthetic", woman: "Outdoor", name: "aesthetic" },
+    { man: "Literary", woman: "Outdoor", name: "literary" },
+    { man: "Music", woman: "Outdoor", name: "music" },
+    { man: "Social Service", woman: "Outdoor", name: "socialService" },
+    { man: "Clarical", woman: "Outdoor", name: "clarical" },
+    { man: "Practical", woman: "Outdoor", name: "practical" },
+    { man: "Medical", woman: "Outdoor", name: "medical" },
   ]
 
   const [selectedFields, setSelectedFields] = useState([])
   const [selectedCategory, setSelectedCategory] = useState("")
-  const [selectedCategoryMap, setSelectedCategoryMap] = useState({})
   const [selectedFieldCategory, setSelectedFieldCategory] = useState({})
   const [fieldValues, setFieldValues] = useState({})
+  const [selectedNumbers, setSelectedNumbers] = useState({})
+  const [selectDisabled, setSelectDisabled] = useState({})
 
-  const handleFieldClick = (fieldNumber, fieldName, label) => {
-    const existingFieldIndex = selectedFields.findIndex(
-      (field) => field.number === fieldNumber
-    )
-    if (existingFieldIndex !== -1) {
-      const updatedFields = [...selectedFields]
-      updatedFields.splice(existingFieldIndex, 1)
-      setSelectedFields(updatedFields)
-    } else {
+  const handleSelectChange = (event, categoryName) => {
+    const selectedNumber = parseInt(event.target.value)
+
+    setSelectedNumbers((prevSelectedNumbers) => ({
+      ...prevSelectedNumbers,
+      [categoryName]: selectedNumber,
+    }))
+
+    if (fieldValues[categoryName] === undefined) {
       setSelectedFields([
         ...selectedFields,
-        { number: fieldNumber, title: fieldName },
+        { number: selectedNumber, title: categoryName },
       ])
-    }
-  }
+      handleFieldCategoryChange(selectedNumber)
 
-  const handleCategoryClick = (categoryName, categoryList) => {
-    setSelectedCategory(categoryName)
-    setSelectedCategoryMap((prevMap) => ({
-      ...prevMap,
-      [categoryList]: categoryName,
-    }))
+      setFieldValues((prevValues) => ({
+        ...prevValues,
+        [categoryName]: selectedNumber,
+      }))
+
+      // Set status disabled untuk kategori ini menjadi true
+      setSelectDisabled((prevSelectDisabled) => ({
+        ...prevSelectDisabled,
+        [categoryName]: true,
+      }))
+    } else {
+      // Jika nilai sudah ada, batalkan pemilihan
+      const updatedNumbers = { ...selectedNumbers }
+      updatedNumbers[categoryName] = ""
+      setSelectedNumbers(updatedNumbers)
+
+      const updatedFields = selectedFields.filter(
+        (field) => field.title !== categoryName
+      )
+      setSelectedFields(updatedFields)
+
+      setSelectedFieldCategory((prevMap) => {
+        const updatedMap = { ...prevMap }
+        delete updatedMap[selectedNumber]
+        return updatedMap
+      })
+
+      setFieldValues((prevValues) => {
+        const updatedValues = { ...prevValues }
+        delete updatedValues[categoryName]
+        return updatedValues
+      })
+
+      setSelectDisabled((prevSelectDisabled) => ({
+        ...prevSelectDisabled,
+        [categoryName]: false,
+      }))
+    }
   }
 
   const handleFieldCategoryChange = (fieldNumber) => {
@@ -73,6 +104,11 @@ const Index = () => {
       return
     }
 
+    setSelectDisabled((prevSelectDisabled) => ({
+      ...prevSelectDisabled,
+      [categoryName]: false,
+    }))
+
     const categoryName = selectedCategoryObj.name
     setSelectedFieldCategory((prevMap) => ({
       ...prevMap,
@@ -87,9 +123,44 @@ const Index = () => {
     }))
   }
 
+  const handleCancel = (categoryName) => {
+    setSelectedNumbers((prevSelectedNumbers) => {
+      const { [categoryName]: removedValue, ...rest } = prevSelectedNumbers
+      return rest
+    })
+
+    const updatedFields = selectedFields.filter(
+      (field) => field.title !== categoryName
+    )
+
+    setSelectedFields(updatedFields)
+
+    setSelectedFieldCategory((prevMap) => {
+      const updatedMap = { ...prevMap }
+      for (const field of updatedFields) {
+        delete updatedMap[field.number]
+      }
+      return updatedMap
+    })
+
+    setFieldValues((prevValues) => {
+      const updatedValues = { ...prevValues }
+      delete updatedValues[categoryName]
+      return updatedValues
+    })
+
+    // Set status disabled untuk kategori ini menjadi false (bisa diklik)
+    setSelectDisabled((prevSelectDisabled) => ({
+      ...prevSelectDisabled,
+      [categoryName]: false,
+    }))
+  }
+
   const handlePrev = () => {
     router.push("/tes-rmib")
   }
+
+  console.log("field", selectedFields)
 
   console.log("field value", fieldValues)
 
@@ -117,7 +188,7 @@ const Index = () => {
   return (
     <LayoutRmib>
       {isLoading ? <Loader /> : null}
-      <section className="mb-20 md:px-16 lg:px-40">
+      <section className="px-5 mb-20 lg:px-40">
         <div className="flex justify-center space-x-8">
           <ButtonPrimary title={"Section A"} />
         </div>
@@ -138,71 +209,62 @@ const Index = () => {
           ) : null}
         </span>
 
-        <fieldset className="flex justify-between">
-          <div className="grid grid-cols-1 gap-8">
+        <fieldset className="flex justify-center">
+          <div className="flex flex-col items-center space-y-4 lg:w-2/3 ">
+            <div className="flex justify-between w-full px-10 text-primary">
+              <p>Laki-laki</p>
+              <p>Perempuan</p>
+            </div>
             {categories.map((category, i) => (
-              <ButtonCategory
+              <SetCategory
                 key={i}
-                title={category.label}
-                isSelected={
-                  selectedCategoryMap[category.name] === category.name
-                }
-                onClick={() =>
-                  handleCategoryClick(category.name, category.name)
-                }
+                men={category.man}
+                woman={category.woman}
                 className="w-full mb-4"
-              />
+              >
+                <select
+                  onChange={(event) => handleSelectChange(event, category.name)}
+                  value={selectedNumbers[category.name] || ""}
+                  disabled={selectDisabled[category.name]}
+                  className="p-2 font-semibold text-center border-2 rounded lg:w-32 border-primary"
+                >
+                  <option
+                    value=""
+                    disabled={!selectedCategory}
+                    className="text-primary"
+                  >
+                    {selectedNumbers[category.name]
+                      ? `Nomor ${selectedNumbers[category.name]}`
+                      : "Pilih nomor"}
+                  </option>
+                  {numbers.map((number) => {
+                    const isNumberSelected = selectedFields.some(
+                      (field) => field.number === number
+                    )
+                    return (
+                      <option
+                        key={number}
+                        value={number}
+                        disabled={isNumberSelected}
+                      >
+                        {number}
+                      </option>
+                    )
+                  })}
+                </select>
+
+                {selectedFields.some(
+                  (field) => field.title === category.name
+                ) && (
+                  <button
+                    onClick={() => handleCancel(category.name)}
+                    className="p-2 ml-2 text-sm font-medium text-red-600 border-2 rounded lg:text-base hover:text-primary hover:bg-kuning border-primary"
+                  >
+                    Cancel
+                  </button>
+                )}
+              </SetCategory>
             ))}
-          </div>
-          <div className="grid grid-cols-1 gap-8">
-            {numbers.map((number, i) => (
-              <ButtonPilihan
-                key={i}
-                isi={number}
-                isSelected={
-                  selectedFields.some((field) => field.number === number) &&
-                  selectedCategory !== ""
-                }
-                onClick={() => {
-                  handleFieldClick(number, selectedCategory)
-                  handleFieldCategoryChange(number, selectedCategory)
-                }}
-                additionalStyle={{
-                  backgroundColor:
-                    selectedFieldCategory[number] === selectedCategory
-                      ? "yellow" // Change this to your desired style
-                      : "",
-                }}
-              />
-            ))}
-          </div>
-          <div className="w-56 ">
-            <table className="border border-primary">
-              <thead>
-                <tr>
-                  <td className="px-4 py-2 border border-primary">No</td>
-                  <td className="px-4 py-2 border border-primary">
-                    Jenis Pekerjaan
-                  </td>
-                </tr>
-              </thead>
-              <tbody>
-                {sortedSelectedFields.map((item, i) => (
-                  <tr key={i}>
-                    <td className="text-center border border-primary">
-                      {item.number}
-                    </td>
-                    <td className="px-2 py-2 border border-primary">
-                      {
-                        categories.find(
-                          (category) => category.name === item.title
-                        )?.label
-                      }
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
           </div>
         </fieldset>
         <fieldset className="flex justify-between mt-20">
