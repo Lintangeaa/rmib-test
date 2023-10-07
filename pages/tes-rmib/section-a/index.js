@@ -210,9 +210,13 @@ const Index = () => {
         </span>
 
         <fieldset className="flex justify-center">
-          <div className="flex flex-col items-center w-full space-y-4 ">
+          <div className="flex flex-col items-center w-full max-w-2xl space-y-4 ">
+            <div className="flex justify-between w-full text-lg font-semibold text-primary px-7">
+              <p>Laki-Laki</p>
+              <p>Perempuan</p>
+            </div>
             {categories.map((category, i) => (
-              <div key={i} className="w-full mb-4">
+              <div key={i} className="w-full">
                 <SetCategory men={category.man} woman={category.woman}>
                   <select
                     onChange={(event) =>
@@ -248,7 +252,7 @@ const Index = () => {
                   ) && (
                     <button
                       onClick={() => handleCancel(category.name)}
-                      className="ml-2 text-red-600 hover:text-primary hover:bg-kuning"
+                      className="p-2 ml-2 font-medium text-red-600 border-2 rounded hover:text-primary hover:bg-kuning border-primary"
                     >
                       Cancel
                     </button>

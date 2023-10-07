@@ -7,6 +7,7 @@ const ButtonPutih = ({ title, classname }) => {
     >
       {title}
     </button>
+    
   )
 }
 

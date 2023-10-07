@@ -3,6 +3,7 @@ import { FaUserAlt } from 'react-icons/fa';
 import WhoamiApi from '@/api/auth/Whoami';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
+import Logo from '../atom/Logo';
 
 const Header = ({ children }) => {
   const router = useRouter();
@@ -30,9 +31,9 @@ const Header = ({ children }) => {
   };
 
   return (
-    <header className="flex items-center justify-between w-full h-40 px-20 mb-10 shadow-xl bg-primary">
+    <header className="flex items-center justify-between w-full h-32 px-20 border-b-2 border-white shadow-2xl bg-primary">
       <div className="flex items-center justify-start lg:w-1/6 ">
-        <div className="w-10 h-10 bg-white">logo</div>
+        Logo Disini
       </div>
       <div className="flex justify-center md:w-4/6">{children}</div>
       <div

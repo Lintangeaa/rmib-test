@@ -1,5 +1,5 @@
 const GetDomain = () => {
-  const domain = process.env.NEXT_PUBLIC_DOMAIN;
+  const domain = process.env.NEXT_PUBLIC_DOMAIN2;
   return domain;
 };
 

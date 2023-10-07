@@ -63,7 +63,7 @@ const Login = () => {
     <main className="flex flex-col items-center">
       {isLoading ? <Loader /> : null}
 
-      <section className="w-1/3 p-8 mt-40 rounded-lg shadow-xl bg-primary">
+      <section className="w-full max-w-lg p-8 mt-40 rounded-lg shadow-xl bg-primary">
         <div className="font-semibold text-center text-white">Login</div>
         <form className="px-8" onSubmit={handleSubmit}>
           <InputWithTitle

@@ -1,6 +1,6 @@
 import GetResultByUserId from '@/api/rmib/GetResultByUserId';
 import GetMahasiswaById from '@/api/users/GetMahasiswaById';
-import Layout from '@/components/Layout';
+import Layout from '@/components/organism/Layout';
 import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
 
@@ -33,11 +33,11 @@ const Result = () => {
 
     try {
       GetResultByUserId({ userId }).then((res) => {
-        if (!res) {
+        if (res.status === false) {
           console.log('Kaga ada');
         }
 
-        const rmib = res;
+        const rmib = res.data;
         setRmib(rmib);
       });
       GetMahasiswaById({ userId }).then((res) => {
@@ -76,34 +76,34 @@ const Result = () => {
             <table className="border border-primary">
               <thead>
                 <tr>
-                  <td className="px-4 py-2 border border-primary">No</td>
-                  <td className="px-4 py-2 border border-primary">
+                  <td className="px-4 py-2 border-2 border-primary">No</td>
+                  <td className="px-4 py-2 border-2 border-primary">
                     Jenis Pekerjaan
                   </td>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td className="px-4 py-2 text-center border border-primary">
+                  <td className="px-4 py-2 text-center border-2 border-primary">
                     1
                   </td>
-                  <td className="px-4 py-2 text-center uppercase border border-primary">
+                  <td className="px-4 py-2 text-center uppercase border-2 border-primary">
                     {rmib.pertama}
                   </td>
                 </tr>
                 <tr>
-                  <td className="px-4 py-2 text-center border border-primary">
+                  <td className="px-4 py-2 text-center border-2 border-primary">
                     2
                   </td>
-                  <td className="px-4 py-2 text-center uppercase border border-primary">
+                  <td className="px-4 py-2 text-center uppercase border-2 border-primary">
                     {rmib.kedua}
                   </td>
                 </tr>
                 <tr>
-                  <td className="px-4 py-2 text-center border border-primary">
+                  <td className="px-4 py-2 text-center border-2 border-primary">
                     2
                   </td>
-                  <td className="px-4 py-2 text-center uppercase border border-primary">
+                  <td className="px-4 py-2 text-center uppercase border-2 border-primary">
                     {rmib.ketiga}
                   </td>
                 </tr>

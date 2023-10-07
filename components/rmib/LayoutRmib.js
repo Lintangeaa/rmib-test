@@ -1,5 +1,5 @@
-import React from "react"
-import Header from "../Header"
+import React from 'react';
+import Header from '../organism/Header';
 
 const LayoutRmib = ({ children }) => {
   return (
@@ -10,9 +10,9 @@ const LayoutRmib = ({ children }) => {
         </button>
       </Header>
 
-      <fieldset className="">{children}</fieldset>
+      <fieldset className="min-h-screen py-5">{children}</fieldset>
     </main>
-  )
-}
+  );
+};
 
-export default LayoutRmib
+export default LayoutRmib;
