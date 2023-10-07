@@ -9,14 +9,19 @@ const Header = ({ children }) => {
   const router = useRouter();
   const [user, setUser] = useState({});
   const [showMenu, setShowMenu] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
 
   useEffect(() => {
     const token = Cookies.get('token');
     if (!token) {
       router.push('/auth/login');
+    } else {
+      const user = JSON.parse(Cookies.get('User'));
+      setUser(user);
+      if (user) {
+        setIsLogin(true);
+      }
     }
-    const user = JSON.parse(Cookies.get('User'));
-    setUser(user);
   }, [router]);
 
   const toggleMenu = () => {

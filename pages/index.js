@@ -3,7 +3,7 @@ import Layout from '../components/organism/Layout';
 export default function Home() {
   return (
     <Layout>
-      <div className="flex flex-col h-screen p-5 space-y-5 bg-cover bg-flury">
+      <div className="flex flex-col h-screen p-5 space-y-5 ">
         <div className="w-full p-5 bg-white rounded shadow-2xl h-1/3">
           Hallo
         </div>
