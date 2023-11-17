@@ -1,4 +1,4 @@
-import React from "react"
+import React from 'react';
 
 const InputWithTitle = ({
   title,
@@ -10,16 +10,16 @@ const InputWithTitle = ({
 }) => {
   return (
     <div className={`flex flex-col ${classname}`}>
-      <span className="font-semibold text-white">{title}</span>
+      <span className="text-sm  text-primary">{title}</span>
       <input
         type={type}
         placeholder={placeholder}
-        className="h-10 px-2 rounded-md "
+        className="h-12 px-2 border-b"
         value={value}
         onChange={onChange}
       />
     </div>
-  )
-}
+  );
+};
 
-export default InputWithTitle
+export default InputWithTitle;

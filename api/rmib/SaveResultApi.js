@@ -1,40 +1,12 @@
 import axios from 'axios';
 import { urlRmib } from '../routes/rmib';
+import GetToken from '../utils/GetToken';
 
-const SaveResultApi = async ({
-  userId,
-  result,
-  minat,
-  pertama,
-  kedua,
-  ketiga,
-  keempat,
-  kelima,
-  keenam,
-  ketujuh,
-  kelapan,
-  kesembilan,
-  kesepuluh,
-  kesebelas,
-  keduabelas,
-}) => {
+const SaveResultApi = async ({ result, minat }) => {
   try {
     const data = {
-      userId,
       result,
       minat,
-      pertama,
-      kedua,
-      ketiga,
-      keempat,
-      kelima,
-      keenam,
-      ketujuh,
-      kelapan,
-      kesembilan,
-      kesepuluh,
-      kesebelas,
-      keduabelas,
     };
     const res = await axios({
       baseURL: `${urlRmib}`,
@@ -43,6 +15,7 @@ const SaveResultApi = async ({
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
+        Authorization: GetToken(),
       },
       timeout: 10000,
       timeoutErrorMessage: 'Request time out, coba lagi',

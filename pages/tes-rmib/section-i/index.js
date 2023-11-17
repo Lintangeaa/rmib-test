@@ -13,25 +13,33 @@ const Index = () => {
   const router = useRouter();
   const [message, setMessage] = useState('');
   const [alertVisible, setAlertVisible] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showNextButton, setShowNextButton] = useState(false);
   const [userId, setUserId] = useState('');
-  const [result, setResult] = useState('');
 
   const numbers = Array.from({ length: 12 }, (_, index) => index + 1);
   const categories = [
-    { man: 'Outdoor', woman: 'Outdoor', name: 'outdoor' },
-    { man: 'Mecanical', woman: 'Outdoor', name: 'mecanical' },
-    { man: 'Computational', woman: 'Outdoor', name: 'computational' },
-    { man: 'Science', woman: 'Outdoor', name: 'science' },
-    { man: 'Personal Contact', woman: 'Outdoor', name: 'personalContact' },
-    { man: 'Aesthetic', woman: 'Outdoor', name: 'aesthetic' },
-    { man: 'Literary', woman: 'Outdoor', name: 'literary' },
-    { man: 'Music', woman: 'Outdoor', name: 'music' },
-    { man: 'Social Service', woman: 'Outdoor', name: 'socialService' },
-    { man: 'Clarical', woman: 'Outdoor', name: 'clarical' },
-    { man: 'Practical', woman: 'Outdoor', name: 'practical' },
-    { man: 'Medical', woman: 'Outdoor', name: 'medical' },
+    { man: 'Kepala Sekolah', woman: 'Guru SD', name: 'socialService' },
+    { man: 'Manajer Bank', woman: 'Sektretaris Pribadi', name: 'clarical' },
+    { man: 'Tukang Batu', woman: 'Juru Masak', name: 'practical' },
+    { man: 'Ahli Bedah', woman: 'Dokter', name: 'medical' },
+    { man: 'Nelayan', woman: 'Petani Bunga', name: 'outdoor' },
+    { man: 'Montir', woman: 'Petugas Mesin Sulam', name: 'mecanical' },
+    {
+      man: 'Akuntan',
+      woman: 'Pegawa Urusan Gaji',
+      name: 'computational',
+    },
+    { man: 'Ahli Astronomi', woman: 'Ahli Biologi', name: 'science' },
+    {
+      man: 'Petugas Wawancara',
+      woman: 'Penyiar Radio',
+      name: 'personalContact',
+    },
+    { man: 'Artis', woman: 'Pinata Panggung', name: 'aesthetic' },
+    { man: 'Pustakawan', woman: 'Penyair', name: 'literary' },
+    { man: 'Pianis Konser', woman: 'Komponis', name: 'music' },
   ];
 
   const [selectedFields, setSelectedFields] = useState([]);
@@ -154,15 +162,10 @@ const Index = () => {
       return updatedValues;
     });
 
-    // Set status disabled untuk kategori ini menjadi false (bisa diklik)
     setSelectDisabled((prevSelectDisabled) => ({
       ...prevSelectDisabled,
       [categoryName]: false,
     }));
-  };
-
-  const handlePrev = () => {
-    router.push('/tes-rmib/section-a');
   };
 
   const handleSelesai = () => {
@@ -182,13 +185,16 @@ const Index = () => {
             }
           }
         }
-        setResult(JSON.stringify(accumulatedValues));
         localStorage.setItem(
           'accumulatedValues',
           JSON.stringify(accumulatedValues),
         );
       }
-      setShowNextButton(true);
+      setIsSuccess(true);
+      setTimeout(() => {
+        setIsSuccess(false);
+        setShowNextButton(true);
+      }, 2000);
     } else {
       setAlertVisible(true);
       setMessage('Pilih semua jenis pekerjaan');
@@ -201,21 +207,8 @@ const Index = () => {
   const handleNextClick = () => {
     if (result) {
       SaveResultApi({
-        userId,
         result,
         minat,
-        pertama,
-        kedua,
-        ketiga,
-        keempat,
-        kelima,
-        keenam,
-        ketujuh,
-        kelapan,
-        kesembilan,
-        kesepuluh,
-        kesebelas,
-        keduabelas,
       }).then((res) => {
         console.log(res);
         if (res.status === true) {
@@ -232,71 +225,44 @@ const Index = () => {
     }
   };
 
-  console.log('result', result);
-
-  console.log('field value', fieldValues);
   const [minat, setMinat] = useState('');
-  const [pertama, setPertama] = useState('');
-  const [kedua, setKedua] = useState('');
-  const [ketiga, setKetiga] = useState('');
-  const [keempat, setKeempat] = useState('');
-  const [kelima, setKelima] = useState('');
-  const [keenam, setkeenam] = useState('');
-  const [ketujuh, setKetujuh] = useState('');
-  const [kelapan, setKelapan] = useState('');
-  const [kesembilan, setKesembilan] = useState('');
-  const [kesepuluh, setKesepuluh] = useState('');
-  const [kesebelas, setKesebelas] = useState('');
-  const [keduabelas, setKeduabelas] = useState('');
+  const [result, setResult] = useState('');
 
   useEffect(() => {
     const user = JSON.parse(Cookies.get('User'));
 
     setUserId(user.id);
-    console.log(user.id);
 
-    const cek = JSON.parse(localStorage.getItem('accumulatedValues'));
-    console.log('Hasil', cek);
-    const dataArray = Object.entries(cek);
+    const getHasil = JSON.parse(localStorage.getItem('accumulatedValues'));
+    const dataArray = Object.entries(getHasil);
 
-    // Mengurutkan array berdasarkan nilai (ascending)
     dataArray.sort((a, b) => a[1] - b[1]);
-
-    // Membuat objek baru dari array yang telah diurutkan
     const sortedObject = {};
     dataArray.forEach((item) => {
       sortedObject[item[0]] = item[1];
     });
-
-    console.log(sortedObject);
     const keysUntilNine = Object.keys(sortedObject).slice(0, 12);
+    const jsonObject = keysUntilNine.reduce((obj, key, index) => {
+      obj[key] = index + 1;
+      return obj;
+    }, {});
 
-    console.log('Keys from first to nine:', keysUntilNine);
+    const resultArray = Object.keys(jsonObject).map((key) => key);
+    const hasil = JSON.stringify(resultArray);
+
+    console.log('Keys from first to nine:', hasil);
     setMinat(keysUntilNine[0]);
-    setPertama(keysUntilNine[0]);
-    setKedua(keysUntilNine[1]);
-    setKetiga(keysUntilNine[2]);
-    setKeempat(keysUntilNine[3]);
-    setKelima(keysUntilNine[4]);
-    setkeenam(keysUntilNine[5]);
-    setKetujuh(keysUntilNine[6]);
-    setKelapan(keysUntilNine[7]);
-    setKesembilan(keysUntilNine[8]);
-    setKesepuluh(keysUntilNine[9]);
-    setKesebelas(keysUntilNine[10]);
-    setKeduabelas(keysUntilNine[11]);
+    setResult(hasil);
   }, []);
 
   return (
     <LayoutRmib>
       {isLoading ? <Loader /> : null}
-      <section className="mb-20 md:px-16 lg:px-60">
-        <div className="flex justify-center space-x-8">
-          <ButtonPrimary title={'Section I'} />
-        </div>
-        <p className="mt-12 mb-12 font-semibold text-center text-black">
-          Urutkan bidang pekerjaan berikut berdasarkan yang paling kamu sukai
+      <section className="md:px-16 lg:px-40">
+        <p className="mt-5 mb-5 font-medium text-center text-black">
+          Urutkan Pekerjaan
         </p>
+
         <span className="flex justify-center">
           {alertVisible ? (
             <Alert
@@ -306,16 +272,20 @@ const Index = () => {
               className="w-1/2 mb-5 text-center"
             />
           ) : null}
+          {isSuccess ? (
+            <Alert
+              type="success"
+              message={'Semua Test Sudah Dilakukan, silahkan lihat hasil'}
+              showIcon
+              className="w-1/2 mb-5 text-center"
+            />
+          ) : null}
         </span>
 
         <fieldset className="flex justify-center">
-          <div className="flex flex-col items-center w-full max-w-2xl space-y-4 ">
-            <div className="flex justify-between w-full text-lg font-semibold text-primary px-7">
-              <p>Laki-Laki</p>
-              <p>Perempuan</p>
-            </div>
+          <div className="flex flex-col items-center w-full space-y-4 ">
             {categories.map((category, i) => (
-              <div key={i} className="w-full">
+              <div key={i} className="">
                 <SetCategory men={category.man} woman={category.woman}>
                   <select
                     onChange={(event) =>
@@ -323,12 +293,12 @@ const Index = () => {
                     }
                     value={selectedNumbers[category.name] || ''}
                     disabled={selectDisabled[category.name]}
-                    className="w-32 p-2 font-semibold text-center border-2 rounded border-primary"
+                    className="w-20 text-sm font-medium text-center text-orange-700 bg-orange-200 border border-orange-700 cursor-pointer rounded-xl"
                   >
                     <option value="" disabled={!selectedCategory}>
                       {selectedNumbers[category.name]
                         ? `Nomor ${selectedNumbers[category.name]}`
-                        : 'Pilih nomor'}
+                        : 'Pilih'}
                     </option>
                     {numbers.map((number) => {
                       const isNumberSelected = selectedFields.some(
@@ -351,7 +321,7 @@ const Index = () => {
                   ) && (
                     <button
                       onClick={() => handleCancel(category.name)}
-                      className="p-2 ml-2 font-medium text-red-600 border-2 rounded hover:text-primary hover:bg-kuning border-primary"
+                      className="px-2 text-xs font-medium text-red-600 bg-red-500 bg-opacity-30 rounded-xl"
                     >
                       Cancel
                     </button>
@@ -362,12 +332,12 @@ const Index = () => {
           </div>
         </fieldset>
 
-        <fieldset className="flex justify-between mt-20">
-          <ButtonAbuBgt onClick={handlePrev} title={'Kembali'} />
-          <ButtonAbuBgt onClick={handleSelesai} title={'Selesai'} />
+        <fieldset className="flex justify-end mt-5">
           {showNextButton ? (
             <ButtonAbuBgt title={'Selanjutnya'} onClick={handleNextClick} />
-          ) : null}
+          ) : (
+            <ButtonAbuBgt onClick={handleSelesai} title={'Selesai'} />
+          )}
         </fieldset>
       </section>
     </LayoutRmib>

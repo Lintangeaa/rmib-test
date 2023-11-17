@@ -1,11 +1,31 @@
 import axios from 'axios';
-import { urlAuth } from '../routes/auth';
+import { urlUsers } from '../routes/users';
 
-const LoginApi = async ({ email, password }) => {
+const SignUpApi = async ({
+  username,
+  email,
+  password,
+  role,
+  name,
+  nim,
+  prodi,
+  phone,
+  gender,
+}) => {
   try {
-    const data = { email, password };
+    const data = {
+      username,
+      email,
+      password,
+      role,
+      name,
+      nim,
+      prodi,
+      phone,
+      gender,
+    };
     const res = await axios({
-      baseURL: `${urlAuth}/login`,
+      baseURL: `${urlUsers}`,
       method: 'POST',
       data,
       headers: {
@@ -25,4 +45,4 @@ const LoginApi = async ({ email, password }) => {
   }
 };
 
-export default LoginApi;
+export default SignUpApi;

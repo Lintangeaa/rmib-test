@@ -35,6 +35,7 @@ const Header = ({ children }) => {
     router.push('/auth/login');
   };
 
+  console.log(user);
   return (
     <header className="flex items-center justify-between w-full h-32 px-20 border-b-2 border-white shadow-2xl bg-primary">
       <div className="flex items-center justify-start lg:w-1/6 ">

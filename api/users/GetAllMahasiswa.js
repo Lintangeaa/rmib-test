@@ -1,18 +1,17 @@
 import axios from 'axios';
-import { urlAuth } from '../routes/auth';
+import GetToken from '../utils/GetToken';
+import { urlUsers } from '../routes/users';
 
-const LoginApi = async ({ email, password }) => {
+const GetAllMahasiswa = async (params) => {
   try {
-    const data = { email, password };
     const res = await axios({
-      baseURL: `${urlAuth}/login`,
-      method: 'POST',
-      data,
+      method: 'GET',
+      baseURL: `${urlUsers}/mahasiswa`,
       headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
+        Authorization: GetToken(),
       },
-      timeout: 10000,
+      params,
+      timeout: 5000,
       timeoutErrorMessage: 'Request time out, coba lagi',
     });
     return res.data;
@@ -20,9 +19,10 @@ const LoginApi = async ({ email, password }) => {
     if (error.code === 'ECONNABORTED') {
       console.log(error.message);
     } else {
+      console.log(error);
       return error.response.data;
     }
   }
 };
 
-export default LoginApi;
+export default GetAllMahasiswa;

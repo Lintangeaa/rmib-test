@@ -22,18 +22,16 @@ const Layout = ({ children }) => {
     }
   }, [router]);
   return (
-    <main>
+    <main className="bg-white ">
       {isLogin ? (
-        <>
+        <div className="min-h-screen bg-white">
           <Header>
             <Navbar />
           </Header>
-          {children}
+          <div className="">{children}</div>
           <Footer />
-        </>
-      ) : (
-        ''
-      )}
+        </div>
+      ) : null}
     </main>
   );
 };

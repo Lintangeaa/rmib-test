@@ -3,11 +3,11 @@ import Image from 'next/image';
 
 const Logo = () => {
   return (
-    <div className="w-1/3">
+    <div className="w-auto">
       <Image
         src={'/cdc.png'}
-        width={200}
-        height={200}
+        width={30}
+        height={30}
         alt="Career Development Center"
       ></Image>
     </div>

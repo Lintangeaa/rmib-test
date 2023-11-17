@@ -1,27 +1,45 @@
 import LoginApi from '@/api/auth/LoginApi';
 import Loader from '@/components/Loader';
-import ButtonPutih from '@/components/button/ButtonPutih';
+import Button from '@/components/button/Button';
 import InputWithTitle from '@/components/input/InputWithTitle';
 import { Alert } from 'antd';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import WhoamiApi from '@/api/auth/Whoami';
+import Link from 'next/link';
+import Image from 'next/image';
+import SignUpApi from '@/api/users/SignUpApi';
+import SelectInput from '@/components/input/SelectInput';
 
 const Login = () => {
+  //sign in
+  const [emails, setEmails] = useState('');
+  const [passwords, setPasswords] = useState('');
+  //sign uo
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [role] = useState('mahasiswa');
+  const [name, setName] = useState('');
+  const [nim, setNim] = useState('');
+  const [prodi, setProdi] = useState('S1 Sistem Informasi');
+  const [phone, setPhone] = useState('');
+  const [gender, setGender] = useState('laki-laki');
+
   const [isHitApi, setIsHitApi] = useState(false);
+  const [alert, setAlert] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('');
-  const [alert, setAlert] = useState('');
+  const [isError, setIsError] = useState('');
+  const [isSignUpMode, setIsSignUpMode] = useState(false);
 
   const router = useRouter();
 
-  const handleSubmit = (e) => {
+  const handleSignIn = (e) => {
     e.preventDefault();
     setIsHitApi(true);
-    LoginApi({ email, password }).then((res) => {
+    LoginApi({ email: emails, password: passwords }).then((res) => {
       console.log(res);
       setIsHitApi(false);
 
@@ -41,7 +59,7 @@ const Login = () => {
         if (res.payload.role === 'admin') {
           setTimeout(() => {
             setIsLoading(false);
-            router.push('/admin');
+            router.push('/admin/dashboard');
           }, 3000);
         } else {
           setTimeout(() => {
@@ -50,46 +68,230 @@ const Login = () => {
           }, 3000);
         }
       } else {
-        setAlert(true);
+        setIsError(true);
         setTimeout(() => {
-          setAlert(false);
+          setIsError(false);
         }, 2000);
         setMessage(res.message);
       }
     });
   };
 
+  const handleSignUp = (e) => {
+    e.preventDefault();
+    setIsHitApi(true);
+    SignUpApi({
+      username,
+      email,
+      password,
+      role,
+      name,
+      nim,
+      prodi,
+      phone,
+      gender,
+    }).then((res) => {
+      console.log(res);
+      setIsHitApi(false);
+
+      if (res.status === true) {
+        setMessage(res.message);
+        setAlert(true);
+
+        setUsername('');
+        setEmail('');
+        setPassword('');
+        setName('');
+        setNim('');
+        setProdi('S1 Sistem Informasi');
+        setPhone('');
+        setGender('laki-laki');
+
+        setTimeout(() => {
+          setAlert(false);
+          setIsSignUpMode(false);
+        }, 3000);
+      } else {
+        setIsError(true);
+        setTimeout(() => {
+          setIsError(false);
+        }, 2000);
+        setMessage(res.message);
+      }
+    });
+  };
+
+  const handleToggleMode = () => {
+    setIsSignUpMode(!isSignUpMode);
+  };
+
+  const genders = ['Laki-laki', 'Perempuan'];
+  const prodis = ['S1 Sistem Informasi', 'S1 Teknik Informatika'];
   return (
-    <main className="flex flex-col items-center">
+    <main className="flex flex-col items-center bg-white">
       {isLoading ? <Loader /> : null}
+      <section className="w-full h-screen p-8">
+        <div className="flex items-center h-full">
+          {isSignUpMode ? (
+            <div className="flex items-center justify-center w-1/2">
+              <Image
+                src={'/ilustration-hero.svg'}
+                width={500}
+                height={100}
+                alt="tentangku"
+              />
+            </div>
+          ) : (
+            <form
+              className="relative flex flex-col justify-center w-1/2 h-auto p-8 border-2 rounded-xl"
+              onSubmit={handleSignIn}
+            >
+              <p className="font-semibold mb-14 text-primary">
+                Sign In to Tentangku
+              </p>
+              <div className="absolute flex justify-center mt-10 top-6 ">
+                {isError ? (
+                  <Alert type="error" message={message} showIcon />
+                ) : null}
+              </div>
+              <InputWithTitle
+                title={'Email'}
+                type={'email'}
+                placeholder={'Masukan email'}
+                value={emails}
+                onChange={(e) => setEmails(e.target.value)}
+              />
+              <InputWithTitle
+                title={'Password'}
+                type={'password'}
+                placeholder={'Masukan password ..'}
+                classname={'mt-5'}
+                value={passwords}
+                onChange={(e) => setPasswords(e.target.value)}
+              />
+              <div className="flex items-center justify-between mt-2 mb-5">
+                <Link className="text-xs text-primary" href={'/'}>
+                  Forgot Password
+                </Link>
+                <div className="text-xs text-primary" href={'/'}>
+                  Belum punya akun?{' '}
+                  <button
+                    className="text-xs font-semibold cursor-pointer text-primary"
+                    onClick={handleToggleMode}
+                  >
+                    {isSignUpMode ? 'Sign In' : 'Sign Up'}
+                  </button>
+                </div>
+              </div>
+              <div className="flex items-center justify-end h-1/3">
+                <Button title={'sign in'} />
+              </div>
+            </form>
+          )}
 
-      <section className="w-full max-w-lg p-8 mt-40 rounded-lg shadow-xl bg-primary">
-        <div className="font-semibold text-center text-white">Login</div>
-        <form className="px-8" onSubmit={handleSubmit}>
-          <InputWithTitle
-            title={'Email'}
-            type={'email'}
-            placeholder={'Masukan email'}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <InputWithTitle
-            title={'Password'}
-            type={'password'}
-            placeholder={'Masukan password ..'}
-            classname={'mt-5'}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+          <div className="flex items-center justify-center w-1/2">
+            {isSignUpMode ? (
+              <form
+                className="relative flex flex-col justify-center w-full h-auto p-8 border-2 rounded-xl"
+                onSubmit={handleSignUp}
+              >
+                <p className="font-semibold mb-14 text-primary">
+                  Sign Up to Tentangku
+                </p>
+                <div className="absolute flex justify-center mt-10 top-6 ">
+                  {isError ? (
+                    <Alert type="error" message={message} showIcon />
+                  ) : null}
+                  {alert ? (
+                    <Alert type="success" message={message} showIcon />
+                  ) : null}
+                </div>
+                <div className="flex flex-col space-y-2">
+                  <InputWithTitle
+                    title={'Username'}
+                    type={'text'}
+                    placeholder={'Masukan username'}
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
+                  <InputWithTitle
+                    title={'Email'}
+                    type={'email'}
+                    placeholder={'Masukan email'}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                  <InputWithTitle
+                    title={'Password'}
+                    type={'password'}
+                    placeholder={'Masukan password ..'}
+                    classname={'mt-5'}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <InputWithTitle
+                    title={'Nama'}
+                    type={'text'}
+                    placeholder={'Masukan nama lengkap'}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                  <InputWithTitle
+                    title={'NIM'}
+                    type={'text'}
+                    placeholder={'Masukan NIM'}
+                    value={nim}
+                    onChange={(e) => setNim(e.target.value)}
+                  />
+                  <div className="flex space-x-4">
+                    <SelectInput
+                      title={'Program Studi'}
+                      options={prodis}
+                      value={prodi}
+                      onChange={(e) => setProdi(e.target.value)}
+                    />
 
-          <div className="flex justify-center">
-            <ButtonPutih title={'Login'} classname={'mt-5'} />
+                    <SelectInput
+                      title={'Jenis Kelamin'}
+                      options={genders}
+                      value={gender}
+                      onChange={(e) => setGender(e.target.value)}
+                    />
+                  </div>
+                  <InputWithTitle
+                    title={'Nomor HP'}
+                    type={'text'}
+                    placeholder={'Masukan nomor'}
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                  />
+                </div>
+                <div className="flex items-center justify-end mt-2 mb-5">
+                  <div className="text-xs text-primary" href={'/'}>
+                    Sudah punya akun?{' '}
+                    <button
+                      className="text-xs font-semibold cursor-pointer text-primary"
+                      onClick={handleToggleMode}
+                    >
+                      {isSignUpMode ? 'Sign In' : 'Sign Up'}
+                    </button>
+                  </div>
+                </div>
+                <div className="flex items-center justify-end h-1/3">
+                  <Button title={'sign up'} />
+                </div>
+              </form>
+            ) : (
+              <Image
+                src={'/hello.svg'}
+                width={500}
+                height={100}
+                alt="tentangku"
+              />
+            )}
           </div>
-        </form>
+        </div>
       </section>
-      <div className="flex justify-center mt-5">
-        {alert ? <Alert type="error" message={message} showIcon /> : null}
-      </div>
     </main>
   );
 };

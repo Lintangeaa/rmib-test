@@ -6,6 +6,7 @@ import Loader from '@/components/Loader';
 import GetResultByUserId from '@/api/rmib/GetResultByUserId';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
 import { useRouter } from 'next/router';
+import Footer from '@/components/organism/Footer';
 
 const Index = () => {
   const router = useRouter();
@@ -14,12 +15,10 @@ const Index = () => {
   useEffect(() => {
     const user = JSON.parse(Cookies.get('User'));
 
-    const userId = user.id;
-
-    console.log(userId);
+    const id = user.id;
 
     try {
-      GetResultByUserId({ userId }).then((res) => {
+      GetResultByUserId({ id }).then((res) => {
         console.log(res);
         if (!res) {
           console.log('Kaga ada');
@@ -39,18 +38,19 @@ const Index = () => {
   return (
     <LayoutRmib>
       {isLoading ? <Loader /> : null}
-      <div className="flex justify-start px-20 mt-10">
+      <div className="flex justify-start px-20">
         <Link href={'/'}>
-          <AiOutlineArrowLeft className="p-2 text-4xl text-white rounded bg-abubgt hover:bg-primary" />
+          <AiOutlineArrowLeft className="p-2 mt-10 text-4xl text-red-700 bg-red-500 border border-red-700 rounded bg-opacity-30 hover:bg-opacity-50" />
         </Link>
       </div>
-      <div className="flex items-center justify-center h-screen">
+      <div className="flex items-center justify-center h-80">
         <Link href="/tes-rmib/section-a">
-          <button className="font-bold text-white rounded-lg bg-primary w-36 h-11">
+          <button className="font-medium bg-blue-400 border rounded-xl border-primary hover:bg-opacity-50 text-primary bg-opacity-30 w-36 h-11">
             Mulai Tes
           </button>
         </Link>
       </div>
+      <Footer />
     </LayoutRmib>
   );
 };

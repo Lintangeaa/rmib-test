@@ -15,18 +15,18 @@ const Index = () => {
 
   const numbers = Array.from({ length: 12 }, (_, index) => index + 1);
   const categories = [
-    { man: 'Outdoor', woman: 'Outdoor', name: 'outdoor' },
-    { man: 'Mecanical', woman: 'Outdoor', name: 'mecanical' },
-    { man: 'Computational', woman: 'Outdoor', name: 'computational' },
-    { man: 'Science', woman: 'Outdoor', name: 'science' },
-    { man: 'Personal Contact', woman: 'Outdoor', name: 'personalContact' },
-    { man: 'Aesthetic', woman: 'Outdoor', name: 'aesthetic' },
-    { man: 'Literary', woman: 'Outdoor', name: 'literary' },
-    { man: 'Music', woman: 'Outdoor', name: 'music' },
-    { man: 'Social Service', woman: 'Outdoor', name: 'socialService' },
-    { man: 'Clarical', woman: 'Outdoor', name: 'clarical' },
-    { man: 'Practical', woman: 'Outdoor', name: 'practical' },
-    { man: 'Medical', woman: 'Outdoor', name: 'medical' },
+    { man: 'Petani', woman: 'Ahli Pertamanan', name: 'outdoor' },
+    { man: 'Insinyur Sipil', woman: 'Ahli Kacamata', name: 'mecanical' },
+    { man: 'Akuntan', woman: 'Pegawai Urusan Gaji', name: 'computational' },
+    { man: 'Ilmuwan', woman: 'Ilmuwan', name: 'science' },
+    { man: 'Penyiar Radio', woman: 'Sales Girl', name: 'personalContact' },
+    { man: 'Seniman', woman: 'Seniwati', name: 'aesthetic' },
+    { man: 'Wartawan', woman: 'Wartawan', name: 'literary' },
+    { man: 'Pianis Konser', woman: 'Pemain Organ', name: 'music' },
+    { man: 'Guru SD', woman: 'Guru SD', name: 'socialService' },
+    { man: 'Manajer Bank', woman: 'Sekretaris Pribadi', name: 'clarical' },
+    { man: 'Tukang Kayu', woman: 'Ahli Pinata Rambut', name: 'practical' },
+    { man: 'Dokter', woman: 'Dokter', name: 'medical' },
   ];
 
   const [selectedFields, setSelectedFields] = useState([]);
@@ -56,13 +56,11 @@ const Index = () => {
         [categoryName]: selectedNumber,
       }));
 
-      // Set status disabled untuk kategori ini menjadi true
       setSelectDisabled((prevSelectDisabled) => ({
         ...prevSelectDisabled,
         [categoryName]: true,
       }));
     } else {
-      // Jika nilai sudah ada, batalkan pemilihan
       const updatedNumbers = { ...selectedNumbers };
       updatedNumbers[categoryName] = '';
       setSelectedNumbers(updatedNumbers);
@@ -149,20 +147,11 @@ const Index = () => {
       return updatedValues;
     });
 
-    // Set status disabled untuk kategori ini menjadi false (bisa diklik)
     setSelectDisabled((prevSelectDisabled) => ({
       ...prevSelectDisabled,
       [categoryName]: false,
     }));
   };
-
-  const handlePrev = () => {
-    router.push('/tes-rmib');
-  };
-
-  console.log('field', selectedFields);
-
-  console.log('field value', fieldValues);
 
   const handleNextClick = () => {
     if (Object.keys(fieldValues).length === 12) {
@@ -171,7 +160,7 @@ const Index = () => {
       setTimeout(() => {
         setIsLoading(false);
         router.push('/tes-rmib/section-b');
-      }, 3000);
+      }, 1000);
     } else {
       setAlertVisible(true);
       setMessage('Pilih semua jenis pekerjaan');
@@ -181,19 +170,12 @@ const Index = () => {
     }
   };
 
-  const sortedSelectedFields = selectedFields
-    .slice()
-    .sort((a, b) => a.number - b.number);
-
   return (
     <LayoutRmib>
       {isLoading ? <Loader /> : null}
-      <section className="px-5 mb-20 lg:px-40">
-        <div className="flex justify-center space-x-8">
-          <ButtonPrimary title={'Section A'} />
-        </div>
-        <p className="mt-12 mb-12 font-semibold text-center text-black">
-          Urutkan bidang pekerjaan berikut berdasarkan yang paling kamu sukai
+      <section className="px-5 lg:px-40">
+        <p className="mt-5 mb-5 font-medium text-center text-black">
+          Urutkan Pekerjaan
         </p>
 
         <span className="flex justify-center">
@@ -210,13 +192,9 @@ const Index = () => {
         </span>
 
         <fieldset className="flex justify-center">
-          <div className="flex flex-col items-center w-full max-w-2xl space-y-4 ">
-            <div className="flex justify-between w-full text-lg font-semibold text-primary px-7">
-              <p>Laki-Laki</p>
-              <p>Perempuan</p>
-            </div>
+          <div className="flex flex-col items-center w-full space-y-4">
             {categories.map((category, i) => (
-              <div key={i} className="w-full">
+              <div key={i} className="">
                 <SetCategory men={category.man} woman={category.woman}>
                   <select
                     onChange={(event) =>
@@ -224,12 +202,12 @@ const Index = () => {
                     }
                     value={selectedNumbers[category.name] || ''}
                     disabled={selectDisabled[category.name]}
-                    className="w-32 p-2 font-semibold text-center border-2 rounded border-primary"
+                    className="w-20 text-sm font-medium text-center text-orange-700 bg-orange-200 border border-orange-700 cursor-pointer rounded-xl"
                   >
                     <option value="" disabled={!selectedCategory}>
                       {selectedNumbers[category.name]
                         ? `Nomor ${selectedNumbers[category.name]}`
-                        : 'Pilih nomor'}
+                        : 'Pilih'}
                     </option>
                     {numbers.map((number) => {
                       const isNumberSelected = selectedFields.some(
@@ -252,7 +230,7 @@ const Index = () => {
                   ) && (
                     <button
                       onClick={() => handleCancel(category.name)}
-                      className="p-2 ml-2 font-medium text-red-600 border-2 rounded hover:text-primary hover:bg-kuning border-primary"
+                      className="px-2 text-xs font-medium text-red-600 bg-red-500 bg-opacity-30 rounded-xl"
                     >
                       Cancel
                     </button>
@@ -262,8 +240,7 @@ const Index = () => {
             ))}
           </div>
         </fieldset>
-        <fieldset className="flex justify-between mt-20">
-          <ButtonAbuBgt onClick={handlePrev} title={'Kembali'} />
+        <fieldset className="flex justify-end">
           <ButtonAbuBgt title={'Selanjutnya'} onClick={handleNextClick} />
         </fieldset>
       </section>

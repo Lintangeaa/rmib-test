@@ -2,11 +2,11 @@ import axios from 'axios';
 import GetToken from '../utils/GetToken';
 import { urlRmib } from '../routes/rmib';
 
-const GetResultByUserId = async ({ userId }) => {
+const GetResultByUserId = async ({ id }) => {
   try {
     const res = await axios({
       method: 'GET',
-      baseURL: `${urlRmib}/${userId}`,
+      baseURL: `${urlRmib}/${id}`,
       headers: {
         Authorization: GetToken(),
       },

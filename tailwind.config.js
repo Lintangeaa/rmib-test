@@ -19,6 +19,8 @@ module.exports = {
         abu: '#F6F1F1',
         abubgt: '#646464',
         kuning: '#F4E869',
+        hijau: '#146C50',
+        abu1: '#EEEEEE',
       },
     },
   },
