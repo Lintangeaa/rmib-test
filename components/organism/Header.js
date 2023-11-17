@@ -37,11 +37,11 @@ const Header = ({ children }) => {
 
   console.log(user);
   return (
-    <header className="flex items-center justify-between w-full h-32 px-20 border-b-2 border-white shadow-2xl bg-primary">
-      <div className="flex items-center justify-start lg:w-1/6 ">
+    <header className="flex items-center justify-between w-full h-32 px-5 border-b-2 border-white shadow-2xl lg:px-20 bg-primary">
+      <div className="items-center justify-start hidden lg:flex lg:w-1/6 ">
         Logo Disini
       </div>
-      <div className="flex justify-center md:w-4/6">{children}</div>
+      <div className="flex w-full lg:justify-center md:w-4/6">{children}</div>
       <div
         onClick={toggleMenu}
         className="flex items-center justify-end lg:w-1/6"

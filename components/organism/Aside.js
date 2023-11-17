@@ -11,7 +11,7 @@ const Aside = () => {
     <aside className="fixed flex flex-col w-1/6 h-screen px-5 py-5 bg-primary ">
       <div className="flex items-center h-10 mb-10 space-x-4">
         <Logo />
-        <p className="font-semibold text-white">TentangKu</p>
+        <p className="font-semibold text-white">Inner Journey</p>
       </div>
       <SideItem title={'Dashboard'} link={'/admin/dashboard'}>
         <MdOutlineDashboardCustomize />

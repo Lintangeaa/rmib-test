@@ -8,6 +8,10 @@ import { IoEyeOutline } from 'react-icons/io5';
 import { MdOutlineDeleteForever } from 'react-icons/md';
 import Button from '@/components/button/Button';
 import { LuRefreshCcw } from 'react-icons/lu';
+import { Modal } from 'antd';
+import DeactiveUserApi from '@/api/users/DeactiveUserApi';
+import DataNotFound from '@/components/atom/DataNotFound';
+import ButtonModal from '@/components/button/ButtonModal';
 
 const Mahasiswa = () => {
   const router = useRouter();
@@ -18,6 +22,8 @@ const Mahasiswa = () => {
   const [limit, setLimit] = useState(10);
   const [name, setName] = useState('');
   const [nim, setNim] = useState('');
+  const [selectedId, setSelectedId] = useState('');
+  const [showModal, setShowModal] = useState(false);
 
   const handleSearch = async () => {
     setIsHitApi(true);
@@ -39,11 +45,11 @@ const Mahasiswa = () => {
       setTotalPages(res.totalPages);
       setTimeout(() => {
         setIsHitApi(false);
-      }, 1000);
+      }, 200);
     } else {
       setTimeout(() => {
         setIsHitApi(false);
-      }, 1000);
+      }, 200);
       setMahasiswa([]);
     }
   };
@@ -108,7 +114,7 @@ const Mahasiswa = () => {
     } else {
       handleSearch();
     }
-  }, []);
+  }, [router]);
 
   const handleSearchButtonClick = () => {
     router.push({
@@ -117,16 +123,30 @@ const Mahasiswa = () => {
     });
     setIsHitApi(true);
   };
+
+  const handleDelete = async (id) => {
+    const res = await DeactiveUserApi({ id });
+    if (res.status) {
+      handleRefresh();
+      setShowModal(!showModal);
+    }
+  };
+
+  const handleModalDelete = (id) => {
+    setSelectedId(id);
+    setShowModal(!showModal);
+  };
+
   useEffect(() => {
     if (isHitApi) {
       handleSearch();
     }
-  }, [page, limit, name, nim, isHitApi]);
+  }, [page, limit, name, nim, isHitApi, handleSearch]);
 
   return (
     <LayoutAdmin>
       {isHitApi && <Loader />}
-      <div className="h-full shadow-lg bg-abu1 rounded-xl">
+      <div className="shadow-lg bg-abu1 rounded-xl">
         <div className="flex justify-end px-4 py-2 text-xs">
           <div className="flex items-center space-x-2">
             <div className="flex space-x-2">
@@ -175,14 +195,17 @@ const Mahasiswa = () => {
                     <td className="">{data.nim}</td>
                     <td className="">{data.prodi}</td>
                     <td className="px-2 ">
-                      <div
-                        className={`flex justify-center items-center h-5 w-auto font-medium rounded-xl uppercase ${
-                          data.status === 'aktif'
-                            ? 'bg-green-300 bg-opacity-20 text-green-400'
-                            : 'bg-red-200 text-red-600'
-                        }`}
-                      >
-                        {data.status}
+                      <div className="flex justify-center">
+                        <div
+                          className={`flex justify-center px-2 border items-center h-5 font-medium rounded-xl uppercase ${
+                            data.status === 'aktif'
+                              ? 'bg-green-300 bg-opacity-20 text-green-400 border-green-400'
+                              : 'bg-red-200 text-red-600 border-red-600'
+                          }`}
+                        >
+                          {' '}
+                          {data.status}
+                        </div>
                       </div>
                     </td>
                     <td className="flex items-center justify-center h-10 px-4 space-x-2 text-xl">
@@ -190,16 +213,17 @@ const Mahasiswa = () => {
                         onClick={() => handleDetailClick(data.id)}
                         className="cursor-pointer"
                       />
-                      <MdOutlineDeleteForever className="text-red-400 cursor-pointer" />
+                      <MdOutlineDeleteForever
+                        className="text-red-400 cursor-pointer"
+                        onClick={() => handleModalDelete(data.id)}
+                      />
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           ) : (
-            <p className="py-5 text-center text-gray-500">
-              Mahasiswa tidak ditemukan.
-            </p>
+            <DataNotFound description={'Mahasiswa tidak ditemukan'} />
           )}
         </div>
         <div className="flex items-center justify-end py-2 space-x-2 text-xs bg-gray-100 border-t border-gray-300">
@@ -232,6 +256,27 @@ const Mahasiswa = () => {
           </div>
         </div>
       </div>
+      <Modal
+        title="Konfirmasi Deactive"
+        open={showModal}
+        onCancel={handleModalDelete}
+        footer={[
+          <div key="button" className="flex justify-end space-x-2">
+            <ButtonModal
+              variant={'cancel'}
+              text={'Cancel'}
+              onClick={handleModalDelete}
+            />
+            <ButtonModal
+              variant={'ok'}
+              text={'Ya'}
+              onClick={() => handleDelete(selectedId)}
+            />
+          </div>,
+        ]}
+      >
+        <p>Apakah anda yakin akan merubah status akun mahasiswa?</p>
+      </Modal>
     </LayoutAdmin>
   );
 };

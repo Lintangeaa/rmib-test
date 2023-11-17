@@ -60,12 +60,12 @@ const Login = () => {
           setTimeout(() => {
             setIsLoading(false);
             router.push('/admin/dashboard');
-          }, 3000);
+          }, 1000);
         } else {
           setTimeout(() => {
             setIsLoading(false);
             router.push('/');
-          }, 3000);
+          }, 1000);
         }
       } else {
         setIsError(true);
@@ -130,10 +130,10 @@ const Login = () => {
   return (
     <main className="flex flex-col items-center bg-white">
       {isLoading ? <Loader /> : null}
-      <section className="w-full h-screen p-8">
-        <div className="flex items-center h-full">
+      <section className="flex items-center w-full min-h-screen p-2 lg:p-8">
+        <div className="items-center justify-center w-full lg:flex ">
           {isSignUpMode ? (
-            <div className="flex items-center justify-center w-1/2">
+            <div className="items-center justify-center hidden lg:flex lg:w-1/2">
               <Image
                 src={'/ilustration-hero.svg'}
                 width={500}
@@ -143,7 +143,7 @@ const Login = () => {
             </div>
           ) : (
             <form
-              className="relative flex flex-col justify-center w-1/2 h-auto p-8 border-2 rounded-xl"
+              className="relative flex flex-col justify-center w-full p-8 border-2 lg:w-1/2 rounded-xl"
               onSubmit={handleSignIn}
             >
               <p className="font-semibold mb-14 text-primary">
@@ -189,16 +189,16 @@ const Login = () => {
             </form>
           )}
 
-          <div className="flex items-center justify-center w-1/2">
+          <div className="items-center justify-center w-full mt-5 mb-5 lg:flex lg:w-1/2">
             {isSignUpMode ? (
               <form
-                className="relative flex flex-col justify-center w-full h-auto p-8 border-2 rounded-xl"
+                className="flex flex-col justify-center w-full min-h-screen p-8 border-2 rounded-xl"
                 onSubmit={handleSignUp}
               >
-                <p className="font-semibold mb-14 text-primary">
+                <p className="font-semibold text-primary">
                   Sign Up to Tentangku
                 </p>
-                <div className="absolute flex justify-center mt-10 top-6 ">
+                <div className="flex justify-center h-12 mt-5">
                   {isError ? (
                     <Alert type="error" message={message} showIcon />
                   ) : null}
@@ -282,12 +282,14 @@ const Login = () => {
                 </div>
               </form>
             ) : (
-              <Image
-                src={'/hello.svg'}
-                width={500}
-                height={100}
-                alt="tentangku"
-              />
+              <div className="items-center justify-center hidden lg:flex lg:w-1/2">
+                <Image
+                  src={'/hello.svg'}
+                  width={500}
+                  height={100}
+                  alt="tentangku"
+                />
+              </div>
             )}
           </div>
         </div>

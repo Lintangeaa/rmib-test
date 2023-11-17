@@ -240,7 +240,7 @@ const Index = () => {
             ))}
           </div>
         </fieldset>
-        <fieldset className="flex justify-end">
+        <fieldset className="flex items-center justify-end mt-5">
           <ButtonAbuBgt title={'Selanjutnya'} onClick={handleNextClick} />
         </fieldset>
       </section>

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Button, Modal } from 'antd';
+import { Button, Divider, Modal } from 'antd';
 import { IoIosLogOut } from 'react-icons/io';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
+import ButtonModal from './ButtonModal';
 
 const LogoutButton = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -33,12 +34,19 @@ const LogoutButton = () => {
 
       <Modal
         title="Konfirmasi Log out"
-        visible={modalVisible}
-        onOk={handleOk}
+        open={modalVisible}
         onCancel={handleCancel}
-        okText={<span className="text-black">Logout</span>}
-        cancelText="Cancel"
         icon={<IoIosLogOut className="text-xl text-red-600" />}
+        footer={[
+          <div key="button" className="flex justify-end space-x-2">
+            <ButtonModal
+              variant={'cancel'}
+              text={'Cancel'}
+              onClick={handleCancel}
+            />
+            <ButtonModal variant={'ok'} text={'Logout'} onClick={handleOk} />
+          </div>,
+        ]}
       >
         <p>Apakah anda yakin akan Log Out?</p>
       </Modal>
