@@ -1,26 +1,25 @@
-FROM node:20.8.1-alpine3.18 AS deps
-# RUN apk add --no-cache libc6-compat
+# Stage 1: Build Dependencies
+FROM node:20.10.0 AS deps
+
 WORKDIR /
 COPY package.json package-lock.json ./
-RUN npm config set proxy $HTTP_PROXY
-RUN npm config set https-proxy $HTTPS_PROXY
-RUN npm set strict-ssl false
-RUN npm install
+RUN  npm install
 
-FROM node:20.8.1-alpine3.18 AS builder
+# Stage 2: Build Application
+FROM node:20.10.0 AS builder
+
 WORKDIR /
 COPY --from=deps /node_modules ./node_modules
 COPY . .
 RUN npm run build
 
-FROM node:20.8.1-alpine3.18 AS runner
+# Stage 3: Production Image
+FROM node:20.10.0 AS runner
+
 WORKDIR /
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
 
-COPY --from=builder --chown=nextjs:nodejs / ./
-COPY --from=builder /node_modules ./node_modules
-COPY --from=builder /package.json ./package.json
+# Copy from the builder stage
+COPY --from=builder --chown=nextjs:nodejs / .
 
-USER nextjs
+
 CMD ["npm", "start"]
