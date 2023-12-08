@@ -1,18 +1,18 @@
 version: '3.7'
 services:
   rmib-fe:
+    image: rmib-fe
     build: .
-    image: 'rmib-fe'
-    container_name: svc-rmib-fe
-    restart: always
+    container_name: rmib-fe
     env_file:
       - ./.env
+    restart: always
     ports:
-      - '3000:3000'
+      - '8200:3000'
     networks:
-      - rmib
+      - rmib-network
 
 networks:
-  rmib:
+  rmib-network:
     name: rmib
-    external: true
+    driver: bridge
