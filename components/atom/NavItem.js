@@ -5,7 +5,7 @@ const NavItem = ({ title, link }) => {
   return (
     <Link
       href={link}
-      className="font-semibold transition-all duration-300 border-b-2 hover:border-b-2 border-primary hover:border-white"
+      className="text-sm uppercase transition-all duration-300 border-b-2 lg:text-base lg:font-semibold hover:border-b-2 border-primary hover:border-white"
     >
       {title}
     </Link>

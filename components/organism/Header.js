@@ -35,9 +35,8 @@ const Header = ({ children }) => {
     router.push('/auth/login');
   };
 
-  console.log(user);
   return (
-    <header className="flex items-center justify-between w-full h-32 px-5 border-b-2 border-white shadow-2xl lg:px-20 bg-primary">
+    <header className="flex items-center justify-between w-full h-32 px-5 border-b-2 border-white shadow-lg lg:px-20 bg-primary">
       <div className="items-center justify-start hidden lg:flex lg:w-1/6 ">
         Logo Disini
       </div>

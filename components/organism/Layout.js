@@ -5,6 +5,7 @@ import Footer from './Footer';
 import { useRouter } from 'next/router';
 import Loader from '../Loader';
 import Cookies from 'js-cookie';
+import Sidebar from './mahasiswa/Sidebar';
 
 const Layout = ({ children }) => {
   const router = useRouter();
@@ -24,11 +25,13 @@ const Layout = ({ children }) => {
   return (
     <main className="bg-white ">
       {isLogin ? (
-        <div className="min-h-screen bg-white">
+        <div className="z-20 min-h-screen bg-white">
+          <Sidebar />
           <Header>
             <Navbar />
           </Header>
-          <div className="">{children}</div>
+          <div className="z-50 p-5">{children}</div>
+
           <Footer />
         </div>
       ) : null}

@@ -19,7 +19,7 @@ const DropdownNav = ({ children, title }) => {
   return (
     <div className="relative">
       <span
-        className="flex items-center font-bold cursor-pointer"
+        className="flex items-center text-sm cursor-pointer lg:text-base lg:font-bold"
         onMouseEnter={openDropdown}
         onClick={toggleDropdown}
       >
@@ -32,7 +32,7 @@ const DropdownNav = ({ children, title }) => {
       </span>
       {showDropdown && (
         <div
-          className="absolute left-0 flex flex-col w-auto min-w-full p-2 mt-2 transition-all duration-300 border-2 border-white rounded-lg shadow-lg bg-primary top-8"
+          className="absolute left-0 flex flex-col w-auto min-w-full p-2 mt-2 transition-all duration-300 border border-white rounded-lg shadow-lg lg:border-2 bg-primary top-4 lg:top-8"
           onMouseLeave={closeDropdown}
         >
           {children}
