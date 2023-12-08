@@ -1,9 +1,9 @@
 version: '3.7'
 services:
-  artajasa-fe:
+  rmib-fe:
     build: .
-    image: 'artajasa-fe'
-    container_name: svc-artajasa-fe
+    image: 'rmib-fe'
+    container_name: rmib-fe
     restart: always
     env_file:
       - ./.env
@@ -13,6 +13,6 @@ services:
       - rmib
 
 networks:
-  rmibl:
+  rmib:
     name: rmib
     external: true
