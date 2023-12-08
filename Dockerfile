@@ -1,19 +1,26 @@
-# Gunakan node image yang sesuai dengan versi Node.js yang dibutuhkan
-FROM node:20.10.0
-
-# Pindah ke direktori proyek
+FROM node:20.8.1-alpine3.18 AS deps
+# RUN apk add --no-cache libc6-compat
 WORKDIR /
-
-# Salin package.json dan package-lock.json
-COPY package*.json ./
-
-# Install dependensi
+COPY package.json package-lock.json ./
+RUN npm config set proxy $HTTP_PROXY
+RUN npm config set https-proxy $HTTPS_PROXY
+RUN npm set strict-ssl false
 RUN npm install
 
-# Salin sumber kode proyek
+FROM node:20.8.1-alpine3.18 AS builder
+WORKDIR /
+COPY --from=deps /node_modules ./node_modules
 COPY . .
-
-# Jalankan perintah build
 RUN npm run build
 
-EXPOSE 3101
+FROM node:20.8.1-alpine3.18 AS runner
+WORKDIR /
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+COPY --from=builder --chown=nextjs:nodejs / ./
+COPY --from=builder /node_modules ./node_modules
+COPY --from=builder /package.json ./package.json
+
+USER nextjs
+CMD ["npm", "start"]
