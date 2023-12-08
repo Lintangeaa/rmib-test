@@ -147,7 +147,7 @@ const Login = () => {
               onSubmit={handleSignIn}
             >
               <p className="font-semibold mb-14 text-primary">
-                Sign In to Tentangku
+                Sign In to Inner Journey
               </p>
               <div className="absolute flex justify-center mt-10 top-6 ">
                 {isError ? (
@@ -196,7 +196,7 @@ const Login = () => {
                 onSubmit={handleSignUp}
               >
                 <p className="font-semibold text-primary">
-                  Sign Up to Tentangku
+                  Sign Up to Inner Journey
                 </p>
                 <div className="flex justify-center h-12 mt-5">
                   {isError ? (

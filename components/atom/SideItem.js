@@ -5,7 +5,6 @@ import { useRouter } from 'next/router';
 const SideItem = ({ children, title, link }) => {
   const router = useRouter();
 
-  const cleanedLink = link.endsWith('/') ? link.slice(0, -1) : link;
   const isActive = router.pathname.startsWith(cleanedLink);
 
   const bgColor = isActive ? 'bg-white ' : '';

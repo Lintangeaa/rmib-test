@@ -143,7 +143,7 @@ const Result = () => {
               </span>
             </p>
 
-            <Modal visible={showModal} onCancel={handleModal} footer={[]}>
+            <Modal open={showModal} onCancel={handleModal} footer={[]}>
               <p>
                 {
                   categories.find((category) => category.name === rmib.minat)
