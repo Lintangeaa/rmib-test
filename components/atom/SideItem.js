@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 
 const SideItem = ({ children, title, link }) => {
   const router = useRouter();
+  const cleanedLink = link.split('?')[0];
 
   const isActive = router.pathname.startsWith(cleanedLink);
 
