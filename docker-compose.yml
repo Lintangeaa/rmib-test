@@ -1,18 +1,18 @@
 version: '3.7'
 services:
-  rmib-fe:
-    image: rmib-fe
+  artajasa-fe:
     build: .
-    container_name: rmib-fe
+    image: 'artajasa-fe'
+    container_name: svc-artajasa-fe
+    restart: always
     env_file:
       - ./.env
-    restart: always
     ports:
-      - '8200:3000'
+      - '3100:3000'
     networks:
-      - rmib-network
+      - rmib
 
 networks:
-  rmib-network:
+  rmibl:
     name: rmib
-    driver: bridge
+    external: true

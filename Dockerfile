@@ -16,5 +16,4 @@ COPY . .
 # Jalankan perintah build
 RUN npm run build
 
-# Port yang digunakan oleh aplikasi Next.js
-EXPOSE 3000
+EXPOSE 3101
