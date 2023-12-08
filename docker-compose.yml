@@ -1,4 +1,5 @@
 version: '3.7'
+
 services:
   rmib-fe:
     build: .
@@ -6,7 +7,7 @@ services:
     container_name: rmib-fe
     restart: always
     env_file:
-      - ./.env
+      - .env
     ports:
       - '3100:3000'
     networks:
@@ -14,5 +15,4 @@ services:
 
 networks:
   rmib:
-    name: rmib
     external: true

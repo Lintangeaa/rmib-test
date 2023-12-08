@@ -1,25 +1,23 @@
-# Stage 1: Build Dependencies
-FROM node:20.10.0 AS deps
+# Use the official Node.js image
+FROM node:20.10.0
 
+# Set the working directory
 WORKDIR /
-COPY package.json package-lock.json ./
-RUN  npm install
 
-# Stage 2: Build Application
-FROM node:20.10.0 AS builder
+# Copy package.json and package-lock.json to the working directory
+COPY package*.json ./
 
-WORKDIR /
-COPY --from=deps /node_modules ./node_modules
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application code
 COPY . .
+
+# Build the Next.js application
 RUN npm run build
 
-# Stage 3: Production Image
-FROM node:20.10.0 AS runner
+# Expose the port that the application will run on
+EXPOSE 3000
 
-WORKDIR /
-
-# Copy from the builder stage
-COPY --from=builder --chown=nextjs:nodejs / .
-
-
+# Run the application
 CMD ["npm", "start"]
