@@ -50,7 +50,9 @@ const Index = () => {
           </button>
         </Link>
       </div>
-      <Footer />
+      <div className="fixed bottom-0 w-full">
+        <Footer />
+      </div>
     </LayoutRmib>
   );
 };

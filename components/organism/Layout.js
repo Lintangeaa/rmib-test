@@ -23,16 +23,19 @@ const Layout = ({ children }) => {
     }
   }, [router]);
   return (
-    <main className="bg-white ">
+    <main className="bg-white">
       {isLogin ? (
-        <div className="z-20 min-h-screen bg-white">
+        <div className="z-20 min-h-screen bg-whie">
           <Sidebar />
           <Header>
             <Navbar />
           </Header>
           <div className="z-50 p-5">{children}</div>
+          <div className="h-20 bg-white"></div>
 
-          <Footer />
+          <div className="fixed bottom-0 w-full">
+            <Footer />
+          </div>
         </div>
       ) : null}
     </main>

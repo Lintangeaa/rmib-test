@@ -5,9 +5,9 @@ const Logo = () => {
   return (
     <div className="w-auto">
       <Image
-        src={'/cdc.png'}
-        width={30}
-        height={30}
+        src={'/inner.png'}
+        width={120}
+        height={50}
         alt="Career Development Center"
       ></Image>
     </div>

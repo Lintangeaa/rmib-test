@@ -4,13 +4,13 @@ import Footer from '../organism/Footer';
 
 const LayoutRmib = ({ children }) => {
   return (
-    <main className="h-screen bg-white">
+    <main className="h-auto bg-white">
       <Header>
         <button className="font-bold bg-white rounded-lg w-36 h-11 text-primary">
           RMIB
         </button>
       </Header>
-      <fieldset className="bg-white">{children}</fieldset>
+      <fieldset className="pb-5 bg-abu">{children}</fieldset>
     </main>
   );
 };

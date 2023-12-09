@@ -12,14 +12,14 @@ const SetCategory = ({ men, children, woman }) => {
     <div className="flex justify-between w-full h-6 space-x-2">
       {user.gender === 'laki-laki' && (
         <div
-          className={`flex w-64 justify-center items-center text-sm text-primary font-medium rounded-xl border border-primary bg-blue-300 bg-opacity-30`}
+          className={`flex w-40 md:w-64 justify-center items-center text-sm text-primary font-medium rounded-xl border border-primary bg-blue-300 bg-opacity-30`}
         >
           {men}
         </div>
       )}
       {user.gender === 'perempuan' && (
         <div
-          className={`flex px-2 w-64 justify-center items-center text-sm font-medium text-green-600 rounded-xl border border-green-400 bg-green-300 bg-opacity-40`}
+          className={`flex px-2 w-40 lg:w-64 justify-center items-center text-sm font-medium text-green-600 rounded-xl border border-green-400 bg-green-300 bg-opacity-40`}
         >
           {woman}
         </div>

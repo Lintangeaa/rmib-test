@@ -38,7 +38,7 @@ const Header = ({ children }) => {
   return (
     <header className="flex items-center justify-between w-full h-32 px-5 border-b-2 border-white shadow-lg lg:px-20 bg-primary">
       <div className="items-center justify-start hidden lg:flex lg:w-1/6 ">
-        Logo Disini
+        <Logo />
       </div>
       <div className="flex w-full lg:justify-center md:w-4/6">{children}</div>
       <div

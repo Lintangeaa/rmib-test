@@ -17,6 +17,7 @@ module.exports = {
       colors: {
         primary: '#146C94',
         abu: '#F6F1F1',
+        abu2: '#f4f4f4',
         abubgt: '#646464',
         kuning: '#F4E869',
         hijau: '#146C50',
