@@ -24,6 +24,10 @@ const Header = ({ children }) => {
     }
   }, [router]);
 
+  const handleProfileClick = () => {
+    router.push(`/profile/${user.id}`);
+  };
+
   const toggleMenu = () => {
     setShowMenu(!showMenu);
   };
@@ -45,13 +49,16 @@ const Header = ({ children }) => {
         onClick={toggleMenu}
         className="flex items-center justify-end lg:w-1/6"
       >
-        <span className="font-semibold text-white me-2 first-letter:uppercase">
+        <span className="text-sm text-white lg:text-base lg:font-semibold me-2 first-letter:uppercase">
           {user.username}
         </span>
-        <FaUserAlt className="p-1 text-5xl text-white border-2 rounded-full hover:cursor-pointer" />
+        <FaUserAlt className="p-1 text-3xl text-white border rounded-full lg:border-2 lg:text-5xl hover:cursor-pointer" />
         {showMenu && (
           <div className="absolute p-2 mt-10 bg-white border rounded-lg shadow-2xl min-w-fit top-20 border-primary right-12">
-            <div className="block w-full px-4 py-2 text-left rounded cursor-pointer text-primary hover:bg-primary hover:text-white">
+            <div
+              className="block w-full px-4 py-2 text-left rounded cursor-pointer text-primary hover:bg-primary hover:text-white"
+              onClick={handleProfileClick}
+            >
               Profile
             </div>
             <button

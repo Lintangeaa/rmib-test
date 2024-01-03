@@ -27,7 +27,7 @@ const Sidebar = () => {
       </button>
       <button
         onClick={toggleAside}
-        className="fixed z-50 p-4 left-40 top-3 lg:hidden focus:outline-none"
+        className="fixed z-50 p-4 left-36 top-3 lg:hidden focus:outline-none"
       >
         {isAsideVisible ? <ActionButton variant={'close'} /> : ''}
       </button>

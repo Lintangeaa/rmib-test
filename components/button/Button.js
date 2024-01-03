@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Button = ({ title, onClick }) => {
+const Button = ({ title, onClick, onKeyPress }) => {
   return (
     <button
       className="p-2 text-xs text-white uppercase rounded-xl whitespace-nowrap "
@@ -8,6 +8,7 @@ const Button = ({ title, onClick }) => {
         background: 'linear-gradient(to right, #146C94, #146C50)',
       }}
       onClick={onClick}
+      onKeyPress={onKeyPress}
     >
       {title}
     </button>

@@ -10,7 +10,7 @@ const Navbar = () => {
       <NavItem title={'HOME'} link={'/'} />
       <DropdownNav title={'TES MINAT'}>
         <DropdownItem title={'RMIB'} link={'/tes-rmib'} />
-        <DropdownItem title={'MBTI'} link={'/tes-rmib'} />
+        <DropdownItem title={'MBTI'} link={'/coming-soon'} />
       </DropdownNav>
       <NavItem title={'TENTANG KAMI'} link={'/'} />
     </nav>

@@ -11,7 +11,7 @@ const ButtonModal = ({ variant, text, onClick }) => {
   }
   return (
     <button
-      className={`px-2 p-1 max-w-[100px] min-w-[60px] bg-opacity-30 hover:bg-opacity-40 rounded-xl border text-xs ${style}`}
+      className={`px-2 p-1 lg:max-w-[120px] min-w-[60px] bg-opacity-30 hover:bg-opacity-40 rounded-xl border text-xs ${style}`}
       onClick={onClick}
     >
       {text}

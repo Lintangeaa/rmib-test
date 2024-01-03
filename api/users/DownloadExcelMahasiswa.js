@@ -2,14 +2,15 @@ import axios from 'axios';
 import GetToken from '../utils/GetToken';
 import { urlUsers } from '../routes/users';
 
-const GetMahasiswaById = async ({ id }) => {
+const DownloadExcelMahasiswa = async (params) => {
   try {
     const res = await axios({
       method: 'GET',
-      baseURL: `${urlUsers}/mahasiswa/detail/${id}`,
+      baseURL: `${urlUsers}/mahasiswa/download-excel`,
       headers: {
         Authorization: GetToken(),
       },
+      params,
       timeout: 5000,
       timeoutErrorMessage: 'Request time out, coba lagi',
     });
@@ -24,4 +25,4 @@ const GetMahasiswaById = async ({ id }) => {
   }
 };
 
-export default GetMahasiswaById;
+export default DownloadExcelMahasiswa;

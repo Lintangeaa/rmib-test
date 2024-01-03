@@ -61,10 +61,8 @@ const Profil = () => {
   };
 
   useEffect(() => {
-    if (id) {
-      fetchMahasiswa();
-    }
-  }, [id, fetchMahasiswa]);
+    fetchMahasiswa();
+  }, [id]);
 
   const handleBack = () => {
     router.push('/admin/mahasiswa');

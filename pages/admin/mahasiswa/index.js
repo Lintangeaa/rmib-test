@@ -12,6 +12,8 @@ import { Modal } from 'antd';
 import DeactiveUserApi from '@/api/users/DeactiveUserApi';
 import DataNotFound from '@/components/atom/DataNotFound';
 import ButtonModal from '@/components/button/ButtonModal';
+import { RiFileExcel2Fill } from 'react-icons/ri';
+import DownloadExcelMahasiswa from '@/api/users/DownloadExcelMahasiswa';
 
 const Mahasiswa = () => {
   const router = useRouter();
@@ -105,6 +107,12 @@ const Mahasiswa = () => {
     setIsHitApi(true);
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch(e);
+    }
+  };
+
   useEffect(() => {
     const { query } = router;
     if (query.name || query.nim) {
@@ -156,6 +164,7 @@ const Mahasiswa = () => {
                 onChange={(e) => setName(e.target.value)}
                 placeholder="nama"
                 className="px-2 py-1 border rounded-lg"
+                onKeyPress={handleKeyPress}
               />
 
               <input
@@ -164,11 +173,18 @@ const Mahasiswa = () => {
                 onChange={(e) => setNim(e.target.value)}
                 placeholder="nim"
                 className="px-2 py-1 border rounded-lg"
+                onKeyPress={handleKeyPress}
               />
             </div>
             <Button title={'search'} onClick={handleSearchButtonClick} />
           </div>
         </div>
+        <div className="flex px-4">
+          <div className="bg-green-200 border border-green-700 rounded cursor-pointer bg-opacity-40">
+            <RiFileExcel2Fill className="text-xl text-green-800" />
+          </div>
+        </div>
+
         <div className="overflow-x-auto rounded-2xl">
           {mahasiswa.length > 0 ? (
             <table className="min-w-full whitespace-nowrap">

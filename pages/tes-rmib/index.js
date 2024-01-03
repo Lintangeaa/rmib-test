@@ -17,22 +17,17 @@ const Index = () => {
 
     const id = user.id;
 
-    try {
-      GetResultByUserId({ id }).then((res) => {
-        console.log(res);
-        if (!res) {
-          console.log('Kaga ada');
-        } else if (res.status === true) {
-          setIsLoading(true);
-          setTimeout(() => {
-            setIsLoading(false);
-            router.push('/tes-rmib/result');
-          }, 2000);
-        }
-      });
-    } catch (error) {
-      console.error('Error fetching result:', error);
-    }
+    GetResultByUserId({ id }).then((res) => {
+      if (!res) {
+        console.log('Kaga ada');
+      } else if (res.status === true) {
+        setIsLoading(true);
+        setTimeout(() => {
+          setIsLoading(false);
+          router.push('/tes-rmib/result');
+        }, 2000);
+      }
+    });
   }, [router]);
 
   return (
@@ -44,7 +39,10 @@ const Index = () => {
         </Link>
       </div>
       <div className="flex items-center justify-center h-80">
-        <Link href="/tes-rmib/section-a">
+        <Link
+          href="/tes-rmib/petunjuk-pengerjaan
+        "
+        >
           <button className="font-medium bg-blue-400 border rounded-xl border-primary hover:bg-opacity-50 text-primary bg-opacity-30 w-36 h-11">
             Mulai Tes
           </button>

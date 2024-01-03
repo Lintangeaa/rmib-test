@@ -10,7 +10,7 @@ const LayoutRmib = ({ children }) => {
           RMIB
         </button>
       </Header>
-      <fieldset className="pb-5 bg-abu">{children}</fieldset>
+      <fieldset className="bg-white ">{children}</fieldset>
     </main>
   );
 };
