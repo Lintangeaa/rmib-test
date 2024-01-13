@@ -21,6 +21,7 @@ const LayoutAdmin = ({ children }) => {
   }, [router]);
 
   const lastSegment = pathname.split('/').pop();
+  const cleanedSegment = lastSegment.replace(/-/g, ' ');
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -30,7 +31,7 @@ const LayoutAdmin = ({ children }) => {
         </div>
         <div className="flex flex-col w-full">
           <div className="h-24">
-            <HeaderAdmin pathname={lastSegment} />
+            <HeaderAdmin pathname={cleanedSegment} />
           </div>
           <div className="flex-1 p-5 overflow-y-auto bg-white">{children}</div>
         </div>

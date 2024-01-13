@@ -11,12 +11,13 @@ import Link from 'next/link';
 import Image from 'next/image';
 import SignUpApi from '@/api/users/SignUpApi';
 import SelectInput from '@/components/input/SelectInput';
+import ContentData from '@/store/ContentData';
 
 const Login = () => {
   //sign in
   const [emails, setEmails] = useState('');
   const [passwords, setPasswords] = useState('');
-  //sign uo
+  //sign up
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -26,6 +27,7 @@ const Login = () => {
   const [prodi, setProdi] = useState('S1 Sistem Informasi');
   const [phone, setPhone] = useState('');
   const [gender, setGender] = useState('laki-laki');
+  const [angkatan, setAngkatan] = useState('2017');
 
   const [isHitApi, setIsHitApi] = useState(false);
   const [alert, setAlert] = useState(false);
@@ -88,6 +90,7 @@ const Login = () => {
       name,
       nim,
       prodi,
+      angkatan,
       phone,
       gender,
     }).then((res) => {
@@ -104,6 +107,7 @@ const Login = () => {
         setName('');
         setNim('');
         setProdi('S1 Sistem Informasi');
+        setAngkatan('2017');
         setPhone('');
         setGender('laki-laki');
 
@@ -126,7 +130,7 @@ const Login = () => {
   };
 
   const genders = ['Laki-laki', 'Perempuan'];
-  const prodis = ['S1 Sistem Informasi', 'S1 Teknik Informatika'];
+
   return (
     <main className="flex flex-col items-center bg-white">
       {isLoading ? <Loader /> : null}
@@ -243,12 +247,19 @@ const Login = () => {
                     value={nim}
                     onChange={(e) => setNim(e.target.value)}
                   />
-                  <div className="flex space-x-4">
+                  <div className="flex justify-between space-x-4">
                     <SelectInput
                       title={'Program Studi'}
-                      options={prodis}
+                      options={ContentData.selectOption.prodi}
                       value={prodi}
                       onChange={(e) => setProdi(e.target.value)}
+                    />
+
+                    <SelectInput
+                      title={'Angkatan'}
+                      options={ContentData.selectOption.angkatan}
+                      value={angkatan}
+                      onChange={(e) => setAngkatan(e.target.value)}
                     />
 
                     <SelectInput

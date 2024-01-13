@@ -191,9 +191,11 @@ const Mahasiswa = () => {
               <thead className="text-sm rounded-t-2xl">
                 <tr className="h-12">
                   <td className="text-center">No</td>
-                  <td className="">Nama</td>
-                  <td className="">NIM</td>
-                  <td className="">Program Studi</td>
+                  <td className="text-center">Nama</td>
+                  <td className="text-center">NIM</td>
+                  <td className="text-center">Program Studi</td>
+                  <td className="text-center">Angkatan</td>
+                  <td className="text-center">RMIB</td>
                   <td className="text-center">Status</td>
                   <td className="text-center">Action</td>
                 </tr>
@@ -208,8 +210,10 @@ const Mahasiswa = () => {
                   >
                     <td className="text-center ">{data.nomor}</td>
                     <td className="">{data.name}</td>
-                    <td className="">{data.nim}</td>
+                    <td className="text-center">{data.nim}</td>
                     <td className="">{data.prodi}</td>
+                    <td className="text-center">{data.angkatan}</td>
+                    <td className="text-center">{data.minat}</td>
                     <td className="px-2 ">
                       <div className="flex justify-center">
                         <div

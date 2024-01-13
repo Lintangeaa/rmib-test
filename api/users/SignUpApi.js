@@ -9,6 +9,7 @@ const SignUpApi = async ({
   name,
   nim,
   prodi,
+  angkatan,
   phone,
   gender,
 }) => {
@@ -21,6 +22,7 @@ const SignUpApi = async ({
       name,
       nim,
       prodi,
+      angkatan,
       phone,
       gender,
     };

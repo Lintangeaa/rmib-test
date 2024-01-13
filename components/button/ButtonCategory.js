@@ -19,7 +19,7 @@ const SetCategory = ({ men, children, woman }) => {
       )}
       {user.gender === 'perempuan' && (
         <div
-          className={`flex px-2 w-40 lg:w-64 justify-center items-center text-sm font-medium text-green-600 rounded-xl border border-green-400 bg-green-300 bg-opacity-40`}
+          className={`flex px-2 w-40 lg:w-64 justify-center whitespace-nowrap items-center text-sm font-medium text-green-600 rounded-xl border border-green-400 bg-green-300 bg-opacity-40`}
         >
           {woman}
         </div>

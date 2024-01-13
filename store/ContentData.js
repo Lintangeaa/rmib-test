@@ -1,7 +1,25 @@
 import React from 'react';
 
 const ContentData = {
-  navItem: ['Home', ''],
+  selectOption: {
+    angkatan: ['2017', '2018', '2019', '2020', '2021', '2022', '2023'],
+    prodi: [
+      'S1 Sistem Informasi',
+      'S1 Teknik Informatika',
+      'S1 Rekayasa Perangkat Lunak',
+      'S1 Sains Data',
+      'D3 Teknik Telekomunikasi',
+      'S1 Teknik Telekomunikasi',
+      'S1 Teknik Elektro',
+      'S1 Teknik Biomedis',
+      'S1 Teknologi Pangan',
+      'S1 Teknik Logistik',
+      'S1 Teknik Industri',
+      'S1 Desain Komunikasi Visual',
+      'S1 Bisnis Digital',
+      'S1 Desain Produk',
+    ],
+  },
   categories: [
     {
       label: 'Outdoor',

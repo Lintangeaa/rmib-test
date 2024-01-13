@@ -14,7 +14,7 @@ const SideItem = ({ children, title, link }) => {
   return (
     <Link href={link}>
       <div
-        className={`flex items-center px-4 py-2 space-x-2 text-sm uppercase transition-all duration-300 rounded-full ${bgColor} ${textColor} hover:bg-white hover:text-primary`}
+        className={`flex items-center px-4 py-2 space-x-2 text-sm whitespace-nowrap uppercase transition-all duration-300 rounded-full ${bgColor} ${textColor} hover:bg-white hover:text-primary`}
       >
         <div>{children}</div>
         <div>{title}</div>
