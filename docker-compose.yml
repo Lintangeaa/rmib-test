@@ -12,3 +12,7 @@ services:
       - '3100:3000'
     networks:
       - rmib
+
+networks:
+  rmib:
+    external: true
